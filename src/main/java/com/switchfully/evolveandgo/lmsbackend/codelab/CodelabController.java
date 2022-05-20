@@ -13,8 +13,8 @@ public class CodelabController {
     @GetMapping(path = "/students/1/codelabs", produces = MediaType.APPLICATION_JSON_VALUE)
     private List<CodelabDto> getCodelabsForStudent() {
         return List.of(
-                new CodelabDto("Rinaldo"),
-                new CodelabDto("Ronaldo")
+                new CodelabDto("Rinaldo", CodelabProgress.DONE),
+                new CodelabDto("Ronaldo", CodelabProgress.BUSY)
         );
     }
 

@@ -24,8 +24,8 @@ class CodelabControllerIntegrationTest {
     void whenGetAllCodelabsForStudentId_thenCodelabsReturns() {
         //GIVEN
         List<CodelabDto> expectedCodelabs = List.of(
-                new CodelabDto("Rinaldo"),
-                new CodelabDto("Ronaldo")
+                new CodelabDto("Rinaldo", CodelabProgress.DONE),
+                new CodelabDto("Ronaldo", CodelabProgress.BUSY)
         );
         //WHEN
         List<CodelabDto> actualCodelabs = RestAssured
@@ -40,6 +40,6 @@ class CodelabControllerIntegrationTest {
                 .extract().body().jsonPath().getList(".", CodelabDto.class);
 
         //THEN
-        Assertions.assertThat(actualCodelabs).isEqualTo(expectedCodelabs);
+        Assertions.assertThat(actualCodelabs).containsAll(expectedCodelabs);
     }
 }
