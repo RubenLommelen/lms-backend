@@ -1,4 +1,4 @@
-package com.switchfully.evolveandgo.lmsbackend.codelab;
+package com.switchfully.evolveandgo.lmsbackend.codelab.domain;
 
 public enum CodelabProgress {
     NOT_STARTED,

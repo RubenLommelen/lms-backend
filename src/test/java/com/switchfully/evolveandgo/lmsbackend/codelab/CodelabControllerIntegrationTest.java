@@ -1,5 +1,6 @@
 package com.switchfully.evolveandgo.lmsbackend.codelab;
 
+import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabProgress;
 import com.switchfully.evolveandgo.lmsbackend.codelab.dto.CodelabDto;
 import io.restassured.RestAssured;
 import org.assertj.core.api.Assertions;

@@ -1,6 +1,6 @@
 package com.switchfully.evolveandgo.lmsbackend.codelab.dto;
 
-import com.switchfully.evolveandgo.lmsbackend.codelab.CodelabProgress;
+import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabProgress;
 
 import java.util.Objects;
 
