@@ -7,22 +7,22 @@ import java.util.Objects;
 public class CodelabDto {
 
     private String name;
-    private CodelabProgress codelabProgress;
+    private CodelabProgress progress;
 
     public CodelabDto() {
     }
 
-    public CodelabDto(String name, CodelabProgress codelabProgress) {
+    public CodelabDto(String name, CodelabProgress progress) {
         this.name = name;
-        this.codelabProgress = codelabProgress;
+        this.progress = progress;
     }
 
     public String getName() {
         return name;
     }
 
-    public CodelabProgress getCodelabProgress() {
-        return codelabProgress;
+    public CodelabProgress getProgress() {
+        return progress;
     }
 
     @Override
@@ -30,11 +30,11 @@ public class CodelabDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CodelabDto that = (CodelabDto) o;
-        return Objects.equals(name, that.name) && codelabProgress == that.codelabProgress;
+        return Objects.equals(name, that.name) && progress == that.progress;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, codelabProgress);
+        return Objects.hash(name, progress);
     }
 }
