@@ -20,6 +20,5 @@ public class KeycloakGrantedAuthoritiesConverter implements Converter<Jwt, Colle
         return roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role))
                 .collect(Collectors.toList());
-
     }
 }
