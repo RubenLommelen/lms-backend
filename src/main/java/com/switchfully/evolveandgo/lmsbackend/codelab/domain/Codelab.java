@@ -3,6 +3,8 @@ package com.switchfully.evolveandgo.lmsbackend.codelab.domain;
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabProgress;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "CODELAB")
@@ -16,23 +18,29 @@ public class Codelab {
     @Column(name = "NAME")
     private String name;
 
-    // Create second entity for Colab Progress
-    @OneToOne(mappedBy = "")
-    private CodelabProgress progress;
 
     public Codelab() {
     }
 
-    public Codelab(String name, CodelabProgress progress) {
+
+    public Codelab(String name) {
         this.name = name;
-        this.progress = progress;
     }
 
     public String getName() {
         return name;
     }
 
-    public CodelabProgress getProgress() {
-        return progress;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Codelab codelab = (Codelab) o;
+        return Objects.equals(id, codelab.id) && Objects.equals(name, codelab.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 }

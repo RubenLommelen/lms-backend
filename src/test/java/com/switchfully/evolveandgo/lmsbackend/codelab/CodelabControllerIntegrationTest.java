@@ -1,7 +1,8 @@
 package com.switchfully.evolveandgo.lmsbackend.codelab;
 
+import com.switchfully.evolveandgo.lmsbackend.codelab.domain.Codelab;
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabProgress;
-import com.switchfully.evolveandgo.lmsbackend.codelab.dto.CodelabDto;
+import com.switchfully.evolveandgo.lmsbackend.codelab.dto.StudentCodelabProgressDto;
 import io.restassured.RestAssured;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -24,12 +25,12 @@ class CodelabControllerIntegrationTest {
     @Test
     void whenGetAllCodelabsForStudentId_thenCodelabsReturns() {
         //GIVEN
-        List<CodelabDto> expectedCodelabs = List.of(
-                new CodelabDto("Rinaldo", CodelabProgress.DONE),
-                new CodelabDto("Ronaldo", CodelabProgress.BUSY)
+        List<StudentCodelabProgressDto> expectedCodelabs = List.of(
+                new StudentCodelabProgressDto(CodelabProgress.DONE, "Rinaldo"),
+                new StudentCodelabProgressDto(CodelabProgress.BUSY, "Ronaldo")
         );
         //WHEN
-        List<CodelabDto> actualCodelabs = RestAssured
+        List<StudentCodelabProgressDto> actualCodelabs = RestAssured
                 .given()
                 .contentType(JSON)
                 .when()
@@ -38,7 +39,7 @@ class CodelabControllerIntegrationTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
-                .extract().body().jsonPath().getList(".", CodelabDto.class);
+                .extract().body().jsonPath().getList(".", StudentCodelabProgressDto.class);
 
         //THEN
         Assertions.assertThat(actualCodelabs).containsAll(expectedCodelabs);

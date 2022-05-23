@@ -2,7 +2,8 @@ package com.switchfully.evolveandgo.lmsbackend.codelab.service;
 
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.Codelab;
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabProgress;
-import com.switchfully.evolveandgo.lmsbackend.codelab.dto.CodelabDto;
+import com.switchfully.evolveandgo.lmsbackend.codelab.domain.StudentCodelabProgress;
+import com.switchfully.evolveandgo.lmsbackend.codelab.dto.StudentCodelabProgressDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,18 +11,18 @@ import java.util.List;
 @Service
 public class CodelabService {
 
-    private final CodelabMapper codelabMapper;
+    private final StudentCodelabProgressMapper studentCodelabProgressMapper;
 
-    public CodelabService(CodelabMapper codelabMapper) {
-        this.codelabMapper = codelabMapper;
+    public CodelabService(StudentCodelabProgressMapper studentCodelabProgressMapper) {
+        this.studentCodelabProgressMapper = studentCodelabProgressMapper;
     }
 
-    public List<CodelabDto> getCodelabsForStudent() {
+    public List<StudentCodelabProgressDto> getCodelabsForStudent() {
         return List.of(
-                new Codelab("Rinaldo", CodelabProgress.DONE),
-                new Codelab("Ronaldo", CodelabProgress.BUSY)
+                new StudentCodelabProgress(CodelabProgress.DONE, new Codelab("Rinaldo")),
+                new StudentCodelabProgress(CodelabProgress.BUSY, new Codelab("Ronaldo"))
         ).stream()
-                .map(codelabDto -> codelabMapper.toDto(codelabDto))
+                .map(studentCodelab -> studentCodelabProgressMapper.toDto(studentCodelab))
                 .toList();
     }
 }
