@@ -1,6 +1,9 @@
 package com.switchfully.evolveandgo.lmsbackend.login.service;
 
+import com.switchfully.evolveandgo.lmsbackend.login.LoginController;
 import org.apache.tomcat.websocket.AuthenticationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -11,11 +14,14 @@ import java.util.Map;
 
 @Service
 public class LoginService {
+    private final Logger logger = LoggerFactory.getLogger(LoginService.class);
 
 
 
     public String getToken(String username, String password) throws AuthenticationException {
         try{
+            logger.info(username + " attempting to log in.");
+
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -34,9 +40,12 @@ public class LoginService {
                             HttpMethod.POST,
                             entity,
                             Map.class);
-
-            return (String) response.getBody().get("access_token");
+            String token = (String) response.getBody().get("access_token");
+            logger.info(username + " is logged in successfully.");
+            return token;
         }catch (Exception e){
+            logger.info(username + " failed to log in.");
+
             throw new AuthenticationException(e.getMessage());
         }
     }

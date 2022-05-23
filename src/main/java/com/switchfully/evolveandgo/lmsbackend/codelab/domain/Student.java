@@ -19,6 +19,7 @@ public class Student {
     @Column(name = "PASSWORD")
     private String password;
 
+
     public Student() {
     }
 
