@@ -52,7 +52,7 @@ class LoginControllerTest {
                 .post("/login")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.UNAUTHORIZED.value());
+                .statusCode(HttpStatus.NOT_FOUND.value());
     }
 
     @Test
@@ -84,7 +84,7 @@ class LoginControllerTest {
                 .post("/login")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.UNAUTHORIZED.value());
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
     @Test
@@ -100,7 +100,7 @@ class LoginControllerTest {
                 .post("/login")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.UNAUTHORIZED.value());
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
     @Test
@@ -116,7 +116,7 @@ class LoginControllerTest {
                 .post("/login")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.UNAUTHORIZED.value());
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
     @Test
@@ -132,7 +132,7 @@ class LoginControllerTest {
                 .post("/login")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.UNAUTHORIZED.value());
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
     @Test
@@ -148,7 +148,7 @@ class LoginControllerTest {
                 .post("/login")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.UNAUTHORIZED.value());
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
     @Test
@@ -164,7 +164,7 @@ class LoginControllerTest {
                 .post("/login")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.UNAUTHORIZED.value());
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
 

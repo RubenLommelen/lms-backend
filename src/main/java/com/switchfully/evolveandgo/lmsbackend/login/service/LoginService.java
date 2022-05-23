@@ -18,7 +18,7 @@ public class LoginService {
 
 
 
-    public String getToken(String username, String password) throws AuthenticationException {
+    public String getToken(String username, String password) throws AuthenticationException, InvalidCredentialsException {
         try{
             logger.info(username + " attempting to log in.");
 
@@ -46,7 +46,7 @@ public class LoginService {
         }catch (Exception e){
             logger.info(username + " failed to log in.");
 
-            throw new AuthenticationException(e.getMessage());
+            throw new InvalidCredentialsException(e.getMessage());
         }
     }
 

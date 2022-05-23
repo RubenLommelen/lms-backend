@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("login")
 public class LoginController {
@@ -27,7 +29,7 @@ public class LoginController {
     @CrossOrigin
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public TokenDto login(@RequestBody LoginDto loginDto) throws AuthenticationException {
+    public TokenDto login(@RequestBody @Valid LoginDto loginDto) throws AuthenticationException {
         Student student = studentService.findByEmail(loginDto.getEmail());
         return new TokenDto(loginService.getToken(student.getDisplayName(), loginDto.getPassword()), student.getDisplayName());
     }
