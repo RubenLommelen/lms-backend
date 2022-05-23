@@ -2,6 +2,8 @@ package com.switchfully.evolveandgo.lmsbackend.codelab.service;
 
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.*;
 import com.switchfully.evolveandgo.lmsbackend.codelab.dto.StudentCodelabProgressDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +15,7 @@ public class CodelabService {
     private final StudentCodelabProgressJpaRepository studentCodelabProgressJpaRepository;
     private final StudentJpaRepository studentJpaRepository;
     private final CodelabJpaRepository codelabJpaRepository;
+    private final Logger logger = LoggerFactory.getLogger(CodelabService.class);
 
     public CodelabService(StudentCodelabProgressMapper studentCodelabProgressMapper, StudentCodelabProgressJpaRepository studentCodelabProgressJpaRepository, StudentJpaRepository studentJpaRepository, CodelabJpaRepository codelabJpaRepository) {
         this.studentCodelabProgressMapper = studentCodelabProgressMapper;
@@ -22,32 +25,32 @@ public class CodelabService {
     }
 
     public List<StudentCodelabProgressDto> getCodelabsForStudent(Long id) {
+        logger.info("Getting codelabs for student with id: " + id);
         Student student = studentJpaRepository.findById(id).orElseThrow(() -> {
+            logger.error(new StudentNotFoundException(id).getMessage());
             throw new StudentNotFoundException(id);
         });
 
+        List<StudentCodelabProgress> studentCodelabProgressList = getStudentCodelabProgressList(student);
 
-        List<StudentCodelabProgress> studentCodeLabProgressForStudent = studentCodelabProgressJpaRepository.findByStudent(student);
-        List<Codelab> codelabs = codelabJpaRepository
-                .findAll();
+        return studentCodelabProgressMapper.toDtoList(studentCodelabProgressList);
 
-        List<Long> codelabProgressIdList = studentCodeLabProgressForStudent.stream()
-                .map(studentCodelabProgress -> studentCodelabProgress.getCodelab().getId()).toList();
-        List<Codelab> filteredCodelabs = codelabs.stream()
-                .filter(codelab -> !codelabProgressIdList.contains(codelab.getId())).toList();
 
-        List<StudentCodelabProgress> codelabsNotStartedList = filteredCodelabs.stream()
+    }
+
+    private List<StudentCodelabProgress> getStudentCodelabProgressList(Student student) {
+        List<StudentCodelabProgress> studentCodelabProgressList = studentCodelabProgressJpaRepository.findByStudent(student);
+        List<Long> codelabProgressIdList = studentCodelabProgressList.stream()
+                .map(studentCodelabProgress -> studentCodelabProgress.getCodelab().getId())
+                .toList();
+
+        List<StudentCodelabProgress> codelabsNotStartedList = codelabJpaRepository.findAll().stream()
+                .filter(codelab -> !codelabProgressIdList.contains(codelab.getId()))
                 .map(codelab -> new StudentCodelabProgress(CodelabProgress.NOT_STARTED, codelab, student))
                 .toList();
-        //List<StudentCodelabProgress> codelabsWithoutProgress = codelabsNotStartedList.stream()
-        //        .filter(codelab -> !studentCodeLabProgressForStudent.contains(codelab))
-        //        .toList();
-//
-        studentCodeLabProgressForStudent.addAll(codelabsNotStartedList);
 
-        return studentCodelabProgressMapper.toDtoList(studentCodeLabProgressForStudent);
-
-
+        studentCodelabProgressList.addAll(codelabsNotStartedList);
+        return studentCodelabProgressList;
     }
 }
 
