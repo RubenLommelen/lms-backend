@@ -3,9 +3,12 @@ package com.switchfully.evolveandgo.lmsbackend.codelab;
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.Codelab;
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabProgress;
 import com.switchfully.evolveandgo.lmsbackend.codelab.dto.StudentCodelabProgressDto;
+import com.switchfully.evolveandgo.lmsbackend.codelab.service.CodelabService;
+import com.switchfully.evolveandgo.lmsbackend.codelab.service.StudentNotFoundException;
 import io.restassured.RestAssured;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -24,7 +27,8 @@ class CodelabControllerIntegrationTest {
     @LocalServerPort
     private int port;
 
-
+    @Autowired
+    private CodelabService codelabService;
 
     @Test
     void whenGetAllCodelabsForStudentId_thenCodelabsReturns() {
@@ -47,5 +51,30 @@ class CodelabControllerIntegrationTest {
 
         //THEN
         Assertions.assertThat(actualCodelabs).containsAll(expectedCodelabs);
+    }
+
+    @Test
+    void givenStudentIdThatDoesNotExist_whenGetAllCodelabsForStudentId_thenNotFoundIsReturned() {
+        //GIVEN
+        Long studentId = 999999999999999999L;
+
+        //WHEN
+
+        RestAssured
+                .given()
+                .contentType(JSON)
+                .when()
+                .port(port)
+                .get("/students/" + studentId + "/codelabs")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.NOT_FOUND.value());
+
+        Throwable thrown = Assertions.catchThrowable(() -> codelabService.getCodelabsForStudent(studentId));
+
+        //THEN
+        Assertions.assertThat(thrown)
+                .isInstanceOf(StudentNotFoundException.class)
+                .hasMessage("No student found for id: " + studentId);
     }
 }

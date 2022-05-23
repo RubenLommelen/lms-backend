@@ -31,6 +31,10 @@ public class Codelab {
         return name;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -42,5 +46,13 @@ public class Codelab {
     @Override
     public int hashCode() {
         return Objects.hash(id, name);
+    }
+
+    @Override
+    public String toString() {
+        return "Codelab{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
