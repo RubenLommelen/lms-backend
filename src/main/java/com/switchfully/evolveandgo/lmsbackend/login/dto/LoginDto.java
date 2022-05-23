@@ -1,16 +1,16 @@
 package com.switchfully.evolveandgo.lmsbackend.login.dto;
 
 public class LoginDto {
-    private final String username;
+    private final String email;
     private final String password;
 
-    public LoginDto(String username, String password) {
-        this.username = username;
+    public LoginDto(String email, String password) {
+        this.email = email;
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
     public String getPassword() {
@@ -18,3 +18,4 @@ public class LoginDto {
     }
 
 }
+

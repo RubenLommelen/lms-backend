@@ -25,7 +25,7 @@ class LoginControllerTest {
 
     @Test
     void givenLoginDto_whenLoggedIn_thenStatusCodeCreated() {
-        LoginDto loginDto = new LoginDto("student", "pwd");
+        LoginDto loginDto = new LoginDto("student@mail.com", "pwd");
 
         RestAssured.given()
                 .port(port)
@@ -57,7 +57,7 @@ class LoginControllerTest {
 
     @Test
     void givenLoginDto_whenLoggedInWithWrongPassword_thenUnauthorized() {
-        LoginDto loginDto = new LoginDto("student", "pdwwwwww");
+        LoginDto loginDto = new LoginDto("student@mail.com", "pdwwwwww");
 
         RestAssured.given()
                 .port(port)
@@ -89,7 +89,7 @@ class LoginControllerTest {
 
     @Test
     void givenLoginDto_whenLoggedInWithEmptyPassword_thenUnauthorized() {
-        LoginDto loginDto = new LoginDto("student", "");
+        LoginDto loginDto = new LoginDto("student@mail.com", "");
 
         RestAssured.given()
                 .port(port)
@@ -121,7 +121,7 @@ class LoginControllerTest {
 
     @Test
     void givenLoginDto_whenLoggedInWithPasswordNull_thenUnauthorized() {
-        LoginDto loginDto = new LoginDto("student", null);
+        LoginDto loginDto = new LoginDto("student@mail.com", null);
 
         RestAssured.given()
                 .port(port)
@@ -153,7 +153,7 @@ class LoginControllerTest {
 
     @Test
     void givenLoginDto_whenLoggedInWithBlankPassword_thenUnauthorized() {
-        LoginDto loginDto = new LoginDto("student", "  ");
+        LoginDto loginDto = new LoginDto("student@mail.com", "  ");
 
         RestAssured.given()
                 .port(port)
