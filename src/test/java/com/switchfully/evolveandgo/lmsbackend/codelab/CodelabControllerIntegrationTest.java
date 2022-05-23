@@ -75,6 +75,6 @@ class CodelabControllerIntegrationTest {
         //THEN
         Assertions.assertThat(thrown)
                 .isInstanceOf(StudentNotFoundException.class)
-                .hasMessage("No student found for id: " + studentId);
+                .hasMessage("No student found for: " + studentId);
     }
 }
