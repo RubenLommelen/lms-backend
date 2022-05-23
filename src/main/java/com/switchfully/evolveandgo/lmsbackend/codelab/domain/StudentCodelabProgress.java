@@ -3,16 +3,16 @@ package com.switchfully.evolveandgo.lmsbackend.codelab.domain;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "CODELAB_PROGRESSION")
+@Table(name = "CODELAB_PROGRESS")
 public class StudentCodelabProgress {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "codelab_progression_seq")
-    @SequenceGenerator(name = "codelab_progression_seq", sequenceName = "codelab_progression_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "codelab_progress_seq")
+    @SequenceGenerator(name = "codelab_progress_seq", sequenceName = "codelab_progress_seq", allocationSize = 1)
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "PROGRESSION")
+    @Column(name = "PROGRESS")
     private CodelabProgress progress;
 
     @ManyToOne

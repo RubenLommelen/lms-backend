@@ -24,6 +24,8 @@ class CodelabControllerIntegrationTest {
     @LocalServerPort
     private int port;
 
+
+
     @Test
     void whenGetAllCodelabsForStudentId_thenCodelabsReturns() {
         //GIVEN
