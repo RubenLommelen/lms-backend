@@ -19,11 +19,15 @@ public class StudentCodelabProgress {
     @JoinColumn(name = "FK_CODELAB")
     private Codelab codelab;
 
-    public StudentCodelabProgress(CodelabProgress progress, Codelab codelab) {
+    @ManyToOne
+    @JoinColumn(name = "FK_STUDENT")
+    private Student student;
+
+    public StudentCodelabProgress(CodelabProgress progress, Codelab codelab, Student student) {
         this.progress = progress;
         this.codelab = codelab;
+        this.student = student;
     }
-
 
     public StudentCodelabProgress() {
     }
@@ -38,5 +42,9 @@ public class StudentCodelabProgress {
 
     public Codelab getCodelab() {
         return codelab;
+    }
+
+    public Student getStudent() {
+        return student;
     }
 }

@@ -5,6 +5,7 @@ import com.switchfully.evolveandgo.lmsbackend.codelab.service.CodelabService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -19,9 +20,9 @@ public class CodelabController {
         this.codelabService = codelabService;
     }
 
-    @GetMapping(path = "/students/1/codelabs", produces = MediaType.APPLICATION_JSON_VALUE)
-    private List<StudentCodelabProgressDto> getCodelabsForStudent() {
-        return codelabService.getCodelabsForStudent();
+    @GetMapping(path = "/students/{id}/codelabs", produces = MediaType.APPLICATION_JSON_VALUE)
+    private List<StudentCodelabProgressDto> getCodelabsForStudent(@PathVariable Long id) {
+        return codelabService.getCodelabsForStudent(id);
     }
 
 }
