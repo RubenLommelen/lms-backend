@@ -1,10 +1,9 @@
 package com.switchfully.evolveandgo.lmsbackend.codelab;
 
-import com.switchfully.evolveandgo.lmsbackend.codelab.domain.Codelab;
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabProgress;
-import com.switchfully.evolveandgo.lmsbackend.codelab.dto.StudentCodelabProgressDto;
+import com.switchfully.evolveandgo.lmsbackend.student.dto.StudentCodelabProgressDto;
 import com.switchfully.evolveandgo.lmsbackend.codelab.service.CodelabService;
-import com.switchfully.evolveandgo.lmsbackend.codelab.service.StudentNotFoundException;
+import com.switchfully.evolveandgo.lmsbackend.student.exception.StudentNotFoundException;
 import io.restassured.RestAssured;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

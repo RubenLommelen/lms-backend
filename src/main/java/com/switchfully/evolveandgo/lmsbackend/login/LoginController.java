@@ -1,13 +1,11 @@
 package com.switchfully.evolveandgo.lmsbackend.login;
 
-import com.switchfully.evolveandgo.lmsbackend.codelab.domain.Student;
-import com.switchfully.evolveandgo.lmsbackend.codelab.service.StudentService;
+import com.switchfully.evolveandgo.lmsbackend.student.domain.Student;
+import com.switchfully.evolveandgo.lmsbackend.student.service.StudentService;
 import com.switchfully.evolveandgo.lmsbackend.login.dto.LoginDto;
 import com.switchfully.evolveandgo.lmsbackend.login.dto.TokenDto;
 import com.switchfully.evolveandgo.lmsbackend.login.service.LoginService;
 import org.apache.tomcat.websocket.AuthenticationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 

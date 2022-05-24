@@ -1,7 +1,10 @@
 package com.switchfully.evolveandgo.lmsbackend.codelab.service;
 
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.*;
-import com.switchfully.evolveandgo.lmsbackend.codelab.dto.StudentCodelabProgressDto;
+import com.switchfully.evolveandgo.lmsbackend.student.dto.StudentCodelabProgressDto;
+import com.switchfully.evolveandgo.lmsbackend.student.domain.Student;
+import com.switchfully.evolveandgo.lmsbackend.student.domain.StudentJpaRepository;
+import com.switchfully.evolveandgo.lmsbackend.student.exception.StudentNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

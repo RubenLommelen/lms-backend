@@ -1,6 +1,6 @@
 package com.switchfully.evolveandgo.lmsbackend.codelab;
 
-import com.switchfully.evolveandgo.lmsbackend.codelab.dto.StudentCodelabProgressDto;
+import com.switchfully.evolveandgo.lmsbackend.student.dto.StudentCodelabProgressDto;
 import com.switchfully.evolveandgo.lmsbackend.codelab.service.CodelabService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;

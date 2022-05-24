@@ -1,4 +1,4 @@
-package com.switchfully.evolveandgo.lmsbackend.codelab.domain;
+package com.switchfully.evolveandgo.lmsbackend.student.domain;
 
 import javax.persistence.*;
 

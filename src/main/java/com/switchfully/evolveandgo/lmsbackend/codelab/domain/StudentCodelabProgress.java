@@ -1,5 +1,7 @@
 package com.switchfully.evolveandgo.lmsbackend.codelab.domain;
 
+import com.switchfully.evolveandgo.lmsbackend.student.domain.Student;
+
 import javax.persistence.*;
 
 @Entity
