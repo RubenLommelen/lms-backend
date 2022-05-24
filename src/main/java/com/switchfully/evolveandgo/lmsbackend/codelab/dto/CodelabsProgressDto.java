@@ -1,5 +1,7 @@
 package com.switchfully.evolveandgo.lmsbackend.codelab.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.List;
 
 public class CodelabsProgressDto {

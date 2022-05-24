@@ -24,7 +24,7 @@ public class CodelabController {
     }
 
     @PostMapping(path = "/students/{id}/codelabs", consumes = MediaType.APPLICATION_JSON_VALUE)
-    private void saveCodelabsProgess(@PathVariable Long id, CodelabsProgressDto codelabsProgressDto) {
+    private void saveCodelabsProgess(@PathVariable Long id, @RequestBody CodelabsProgressDto codelabsProgressDto) {
         System.out.println(codelabsProgressDto);
     }
 
