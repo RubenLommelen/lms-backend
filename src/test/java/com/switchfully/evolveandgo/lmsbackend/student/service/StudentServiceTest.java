@@ -30,4 +30,13 @@ class StudentServiceTest {
         Assertions.assertThat(actualStudent).isEqualTo(expectedStudent);
     }
 
+    @Test
+    void GivenStudentEmail_WhenEmailExists_ThenFindStudentByEmail() {
+        String email = "rinaldo@spaghetto.be";
+        Student expectedStudent = new Student("rinaldo@spaghetto.be", "Rinaldo", "Spaghetto");
+        Student actualStudent = studentService.findByEmail(email);
+
+        Assertions.assertThat(actualStudent).isEqualTo(expectedStudent);
+    }
+
 }
