@@ -1,6 +1,7 @@
 package com.switchfully.evolveandgo.lmsbackend.student.service;
 
 import com.switchfully.evolveandgo.lmsbackend.student.domain.Student;
+import com.switchfully.evolveandgo.lmsbackend.student.exception.StudentNotFoundException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,28 @@ class StudentServiceTest {
         Student actualStudent = studentService.findById(id);
 
         Assertions.assertThat(actualStudent).isEqualTo(expectedStudent);
+    }
+
+    @Test
+    void GivenStudentEmail_WhenEmailExists_ThenFindStudentByEmail() {
+        String email = "rinaldo@spaghetto.be";
+        Student expectedStudent = new Student("rinaldo@spaghetto.be", "Rinaldo", "Spaghetto");
+        Student actualStudent = studentService.findByEmail(email);
+
+        Assertions.assertThat(actualStudent).isEqualTo(expectedStudent);
+    }
+
+    @Test
+    void GivenStudentEmail_WhenEmailDoesNotExists_ThenThrowException() {
+        String email = "rinaldo@pizza.be";
+
+        Throwable thrown = Assertions.catchThrowable(() -> studentService.findByEmail(email));
+
+        //THEN
+        Assertions.assertThat(thrown)
+                .isInstanceOf(StudentNotFoundException.class)
+                .hasMessage("No student found for: " + email);
+
     }
 
 }
