@@ -29,7 +29,7 @@ public class LoginController {
     @ResponseStatus(HttpStatus.CREATED)
     public TokenDto login(@RequestBody @Valid LoginDto loginDto) throws AuthenticationException {
         Student student = studentService.findByEmail(loginDto.getEmail());
-        return new TokenDto(loginService.getToken(student.getDisplayName(), loginDto.getPassword()), student.getDisplayName());
+        return new TokenDto(loginService.getToken(student.getDisplayName(), loginDto.getPassword()), student.getDisplayName(), student.getId());
     }
 
 }
