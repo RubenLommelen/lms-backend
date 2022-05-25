@@ -36,6 +36,7 @@ class CodelabControllerIntegrationTest {
                 new StudentCodelabProgressDto(CodelabProgress.DONE, "Rinaldo"),
                 new StudentCodelabProgressDto(CodelabProgress.BUSY, "Ronaldo")
         );
+
         //WHEN
         List<StudentCodelabProgressDto> actualCodelabs = RestAssured
                 .given()
@@ -58,7 +59,6 @@ class CodelabControllerIntegrationTest {
         Long studentId = 999999999999999999L;
 
         //WHEN
-
         RestAssured
                 .given()
                 .contentType(JSON)

@@ -20,6 +20,5 @@ public class LoginDto {
     public String getPassword() {
         return password;
     }
-
 }
 

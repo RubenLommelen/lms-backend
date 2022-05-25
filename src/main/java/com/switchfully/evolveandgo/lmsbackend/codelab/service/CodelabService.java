@@ -29,6 +29,7 @@ public class CodelabService {
 
     public List<StudentCodelabProgressDto> getCodelabsForStudent(Long id) {
         logger.info("Getting codelabs for student with id: " + id);
+
         Student student = studentJpaRepository.findById(id).orElseThrow(() -> {
             logger.error(new StudentNotFoundException(id).getMessage());
             throw new StudentNotFoundException(id);
@@ -37,12 +38,11 @@ public class CodelabService {
         List<StudentCodelabProgress> studentCodelabProgressList = getStudentCodelabProgressList(student);
 
         return studentCodelabProgressMapper.toDtoList(studentCodelabProgressList);
-
-
     }
 
     private List<StudentCodelabProgress> getStudentCodelabProgressList(Student student) {
         List<StudentCodelabProgress> studentCodelabProgressList = studentCodelabProgressJpaRepository.findByStudent(student);
+
         List<Long> codelabProgressIdList = studentCodelabProgressList.stream()
                 .map(studentCodelabProgress -> studentCodelabProgress.getCodelab().getId())
                 .toList();
