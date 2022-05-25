@@ -4,7 +4,7 @@ import com.switchfully.evolveandgo.lmsbackend.codelab.domain.*;
 import com.switchfully.evolveandgo.lmsbackend.student.dto.StudentCodelabProgressDto;
 import com.switchfully.evolveandgo.lmsbackend.student.domain.Student;
 import com.switchfully.evolveandgo.lmsbackend.student.domain.StudentJpaRepository;
-import com.switchfully.evolveandgo.lmsbackend.student.exception.StudentNotFoundException;
+import com.switchfully.evolveandgo.lmsbackend.student.service.StudentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -14,26 +14,24 @@ import java.util.List;
 @Service
 public class CodelabService {
 
-    private final StudentCodelabProgressMapper studentCodelabProgressMapper;
-    private final StudentCodelabProgressJpaRepository studentCodelabProgressJpaRepository;
-    private final StudentJpaRepository studentJpaRepository;
-    private final CodelabJpaRepository codelabJpaRepository;
     private final Logger logger = LoggerFactory.getLogger(CodelabService.class);
 
-    public CodelabService(StudentCodelabProgressMapper studentCodelabProgressMapper, StudentCodelabProgressJpaRepository studentCodelabProgressJpaRepository, StudentJpaRepository studentJpaRepository, CodelabJpaRepository codelabJpaRepository) {
+    private final StudentCodelabProgressMapper studentCodelabProgressMapper;
+    private final StudentCodelabProgressJpaRepository studentCodelabProgressJpaRepository;
+    private final CodelabJpaRepository codelabJpaRepository;
+    private final StudentService studentService;
+
+    public CodelabService(StudentCodelabProgressMapper studentCodelabProgressMapper, StudentCodelabProgressJpaRepository studentCodelabProgressJpaRepository, CodelabJpaRepository codelabJpaRepository, StudentService studentService) {
         this.studentCodelabProgressMapper = studentCodelabProgressMapper;
         this.studentCodelabProgressJpaRepository = studentCodelabProgressJpaRepository;
-        this.studentJpaRepository = studentJpaRepository;
         this.codelabJpaRepository = codelabJpaRepository;
+        this.studentService = studentService;
     }
 
     public List<StudentCodelabProgressDto> getCodelabsForStudent(Long id) {
         logger.info("Getting codelabs for student with id: " + id);
 
-        Student student = studentJpaRepository.findById(id).orElseThrow(() -> {
-            logger.error(new StudentNotFoundException(id).getMessage());
-            throw new StudentNotFoundException(id);
-        });
+        Student student = studentService.findById(id);
 
         List<StudentCodelabProgress> studentCodelabProgressList = getStudentCodelabProgressList(student);
 
