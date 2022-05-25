@@ -18,7 +18,7 @@ public class LoginService {
 
 
 
-    public String getToken(String username, String password) throws AuthenticationException, InvalidCredentialsException {
+    public String getToken(String username, String password) throws InvalidCredentialsException {
         try{
             logger.info(username + " attempting to log in.");
 
@@ -40,10 +40,11 @@ public class LoginService {
                             HttpMethod.POST,
                             entity,
                             Map.class);
+
             String token = (String) response.getBody().get("access_token");
             logger.info(username + " is logged in successfully.");
             return token;
-        }catch (Exception e){
+        } catch (Exception e){
             logger.info(username + " failed to log in.");
 
             throw new InvalidCredentialsException(e.getMessage());

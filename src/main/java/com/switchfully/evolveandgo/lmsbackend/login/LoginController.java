@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
+@CrossOrigin
 @RequestMapping("login")
 public class LoginController {
 
@@ -24,10 +25,10 @@ public class LoginController {
         this.studentService = studentService;
     }
 
-    @CrossOrigin
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public TokenDto login(@RequestBody @Valid LoginDto loginDto) throws AuthenticationException {
+    public TokenDto login(@RequestBody @Valid LoginDto loginDto) {
         Student student = studentService.findByEmail(loginDto.getEmail());
         return new TokenDto(loginService.getToken(student.getDisplayName(), loginDto.getPassword()), student.getDisplayName(), student.getId());
     }
