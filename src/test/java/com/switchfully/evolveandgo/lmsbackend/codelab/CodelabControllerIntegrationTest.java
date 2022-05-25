@@ -33,8 +33,8 @@ class CodelabControllerIntegrationTest {
     void whenGetAllCodelabsForStudentId_thenCodelabsReturns() {
         //GIVEN
         List<StudentCodelabProgressDto> expectedCodelabs = List.of(
-                new StudentCodelabProgressDto(CodelabProgress.DONE, "Rinaldo"),
-                new StudentCodelabProgressDto(CodelabProgress.BUSY, "Ronaldo")
+                new StudentCodelabProgressDto(CodelabProgress.DONE, "Variables"),
+                new StudentCodelabProgressDto(CodelabProgress.BUSY, "Streams")
         );
 
         //WHEN
