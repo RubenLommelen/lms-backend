@@ -28,12 +28,7 @@ public class CodelabController {
 
     @GetMapping(path = "/progress", produces = MediaType.APPLICATION_JSON_VALUE)
     private List<ProgressOverviewDto> getProgressOverview() {
-        return List.of(
-                new ProgressOverviewDto(5L, "Alperen", 3, 12),
-                new ProgressOverviewDto(9L, "BakerTheHero", 11, 12),
-                new ProgressOverviewDto(1L, "Ruben", 0, 12),
-                new ProgressOverviewDto(6L, "Rinaldo", 12, 12)
-        );
+        return codelabService.getProgressOverview();
     }
 
 }
