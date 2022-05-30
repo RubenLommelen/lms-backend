@@ -1,5 +1,6 @@
 package com.switchfully.evolveandgo.lmsbackend.codelab;
 
+import com.switchfully.evolveandgo.lmsbackend.progress.dto.ProgressOverviewDto;
 import com.switchfully.evolveandgo.lmsbackend.student.dto.StudentCodelabProgressDto;
 import com.switchfully.evolveandgo.lmsbackend.codelab.service.CodelabService;
 import org.springframework.http.MediaType;
@@ -23,6 +24,13 @@ public class CodelabController {
     @GetMapping(path = "/students/{id}/codelabs", produces = MediaType.APPLICATION_JSON_VALUE)
     private List<StudentCodelabProgressDto> getCodelabsForStudent(@PathVariable Long id) {
         return codelabService.getCodelabsForStudent(id);
+    }
+
+    @GetMapping(path = "/progress", produces = MediaType.APPLICATION_JSON_VALUE)
+    private List<ProgressOverviewDto> getProgressOverview() {
+        return List.of(
+                new ProgressOverviewDto(5L, "Alperen", 3, 12)
+        );
     }
 
 }

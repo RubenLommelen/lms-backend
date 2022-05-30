@@ -1,6 +1,7 @@
 package com.switchfully.evolveandgo.lmsbackend.codelab;
 
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabProgress;
+import com.switchfully.evolveandgo.lmsbackend.progress.dto.ProgressOverviewDto;
 import com.switchfully.evolveandgo.lmsbackend.student.dto.StudentCodelabProgressDto;
 import com.switchfully.evolveandgo.lmsbackend.codelab.service.CodelabService;
 import com.switchfully.evolveandgo.lmsbackend.student.exception.StudentNotFoundException;
@@ -75,5 +76,27 @@ class CodelabControllerIntegrationTest {
         Assertions.assertThat(thrown)
                 .isInstanceOf(StudentNotFoundException.class)
                 .hasMessage("No student found for: " + studentId);
+    }
+
+    @Test
+    void given_whenGetCodelabProgressForAllStudents_thenProgressReturned() {
+        List<ProgressOverviewDto> expected = List.of(
+                new ProgressOverviewDto(5L, "Alperen", 3, 12)
+        );
+
+        // WHEN
+        List<ProgressOverviewDto> actual = RestAssured
+                .given()
+                .contentType(JSON)
+                .when()
+                .port(port)
+                .get("/progress")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract().body().jsonPath().getList(".", ProgressOverviewDto.class);
+
+        // THEN
+        Assertions.assertThat(actual).containsAll(expected);
     }
 }
