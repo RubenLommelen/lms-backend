@@ -81,7 +81,10 @@ class CodelabControllerIntegrationTest {
     @Test
     void given_whenGetCodelabProgressForAllStudents_thenProgressReturned() {
         List<ProgressOverviewDto> expected = List.of(
-                new ProgressOverviewDto(5L, "Alperen", 3, 12)
+                new ProgressOverviewDto(5L, "Alperen", 3, 12),
+                new ProgressOverviewDto(9L, "BakerTheHero", 11, 12),
+                new ProgressOverviewDto(1L, "Ruben", 0, 12),
+                new ProgressOverviewDto(6L, "Rinaldo", 12, 12)
         );
 
         // WHEN
