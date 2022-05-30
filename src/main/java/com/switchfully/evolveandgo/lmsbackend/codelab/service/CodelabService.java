@@ -56,6 +56,7 @@ public class CodelabService {
     }
 
     public List<ProgressOverviewDto> getProgressOverview() {
+        System.out.println(studentCodelabProgressJpaRepository.findProgressOverview().size());
         return List.of(
                 new ProgressOverviewDto(5L, "Alperen", 3, 12),
                 new ProgressOverviewDto(9L, "BakerTheHero", 11, 12),
