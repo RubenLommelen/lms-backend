@@ -1,1 +1,1 @@
-web java -Dserver.port=$PORT $JAVA_OPTS -Dspring.datasource.url=jdbc:postgresql://database-2.cuvv0osxzgmi.eu-west-3.rds.amazonaws.com:5432/evolveandgo?currentSchema=lms -Dspring.datasource.username=student -Dspring.datasource.password=spidermanismyhero -jar target/lms-backend-0.0.1-SNAPSHOT.jar
+web java -Dserver.port=$PORT $JAVA_OPTS -jar target/lms-backend-0.0.1-SNAPSHOT.jar
