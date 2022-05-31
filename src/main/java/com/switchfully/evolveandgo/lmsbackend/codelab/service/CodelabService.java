@@ -62,24 +62,19 @@ public class CodelabService {
         return studentCodelabProgressList;
     }
 
-    public boolean saveCodelabProgress(List<CodelabProgressDto> codelabProgressDtoList, Long id) {
+    public void saveCodelabProgress(List<CodelabProgressDto> codelabProgressDtoList, Long id) {
         Student student = studentService.findById(id);
 
-        try{
-            for (CodelabProgressDto codelabProgressDto : codelabProgressDtoList) {
+        for (CodelabProgressDto codelabProgressDto : codelabProgressDtoList) {
 
-                if (studentCodelabProgressJpaRepository.existsByCodelabIdAndStudentId(codelabProgressDto.getCodelabId(), codelabProgressDto.getStudentId())) {
-                    StudentCodelabProgress studentProgress = studentCodelabProgressJpaRepository.findByCodelabIdAndStudentId(codelabProgressDto.getCodelabId(), codelabProgressDto.getStudentId());
-                    studentProgress.setProgress(codelabProgressDto.getProgress());
-                    studentCodelabProgressJpaRepository.save(studentProgress);
-                } else {
-                    Codelab codelab = codelabJpaRepository.findById(codelabProgressDto.getCodelabId()).get();
-                    studentCodelabProgressJpaRepository.save(new StudentCodelabProgress(codelabProgressDto.getProgress(), codelab, student));
-                }
+            if (studentCodelabProgressJpaRepository.existsByCodelabIdAndStudentId(codelabProgressDto.getCodelabId(), codelabProgressDto.getStudentId())) {
+                StudentCodelabProgress studentProgress = studentCodelabProgressJpaRepository.findByCodelabIdAndStudentId(codelabProgressDto.getCodelabId(), codelabProgressDto.getStudentId());
+                studentProgress.setProgress(codelabProgressDto.getProgress());
+                studentCodelabProgressJpaRepository.save(studentProgress);
+            } else {
+                Codelab codelab = codelabJpaRepository.findById(codelabProgressDto.getCodelabId()).get();
+                studentCodelabProgressJpaRepository.save(new StudentCodelabProgress(codelabProgressDto.getProgress(), codelab, student));
             }
-            return true;
-        }catch (Exception e){
-            return false;
         }
 
     }

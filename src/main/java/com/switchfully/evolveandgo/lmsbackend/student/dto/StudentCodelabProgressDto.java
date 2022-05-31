@@ -29,5 +29,25 @@ public class StudentCodelabProgressDto {
         return codelabName;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StudentCodelabProgressDto that = (StudentCodelabProgressDto) o;
+        return Objects.equals(codelabId, that.codelabId) && progress == that.progress && Objects.equals(codelabName, that.codelabName);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(codelabId, progress, codelabName);
+    }
+
+    @Override
+    public String toString() {
+        return "StudentCodelabProgressDto{" +
+                "codelabId=" + codelabId +
+                ", progress=" + progress +
+                ", codelabName='" + codelabName + '\'' +
+                '}';
+    }
 }
