@@ -1,6 +1,7 @@
 package com.switchfully.evolveandgo.lmsbackend.codelab.service;
 
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.*;
+import com.switchfully.evolveandgo.lmsbackend.codelab.dto.CodelabProgressDto;
 import com.switchfully.evolveandgo.lmsbackend.student.dto.StudentCodelabProgressDto;
 import com.switchfully.evolveandgo.lmsbackend.student.domain.Student;
 import com.switchfully.evolveandgo.lmsbackend.student.domain.StudentJpaRepository;
@@ -18,12 +19,14 @@ public class CodelabService {
 
     private final StudentCodelabProgressMapper studentCodelabProgressMapper;
     private final StudentCodelabProgressJpaRepository studentCodelabProgressJpaRepository;
+    private final StudentJpaRepository studentJpaRepository;
     private final CodelabJpaRepository codelabJpaRepository;
     private final StudentService studentService;
 
-    public CodelabService(StudentCodelabProgressMapper studentCodelabProgressMapper, StudentCodelabProgressJpaRepository studentCodelabProgressJpaRepository, CodelabJpaRepository codelabJpaRepository, StudentService studentService) {
+    public CodelabService(StudentCodelabProgressMapper studentCodelabProgressMapper, StudentCodelabProgressJpaRepository studentCodelabProgressJpaRepository, StudentJpaRepository studentJpaRepository, CodelabJpaRepository codelabJpaRepository, StudentService studentService) {
         this.studentCodelabProgressMapper = studentCodelabProgressMapper;
         this.studentCodelabProgressJpaRepository = studentCodelabProgressJpaRepository;
+        this.studentJpaRepository = studentJpaRepository;
         this.codelabJpaRepository = codelabJpaRepository;
         this.studentService = studentService;
     }
@@ -36,6 +39,8 @@ public class CodelabService {
         List<StudentCodelabProgress> studentCodelabProgressList = getStudentCodelabProgressList(student);
 
         return studentCodelabProgressMapper.toDtoList(studentCodelabProgressList);
+
+
     }
 
     private List<StudentCodelabProgress> getStudentCodelabProgressList(Student student) {
@@ -52,6 +57,11 @@ public class CodelabService {
 
         studentCodelabProgressList.addAll(codelabsNotStartedList);
         return studentCodelabProgressList;
+    }
+
+    public void saveCodelabProgress(List<CodelabProgressDto> codelabProgressDto) {
+
+
     }
 }
 
