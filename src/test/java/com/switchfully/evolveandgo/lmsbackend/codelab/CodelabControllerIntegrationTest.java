@@ -29,29 +29,29 @@ class CodelabControllerIntegrationTest {
     @Autowired
     private CodelabService codelabService;
 
-//    @Test
-//    void whenGetAllCodelabsForStudentId_thenCodelabsReturns() {
-//        //GIVEN
-//        List<StudentCodelabProgressDto> expectedCodelabs = List.of(
-//                new StudentCodelabProgressDto(CodelabProgress.DONE, "Rinaldo"),
-//                new StudentCodelabProgressDto(CodelabProgress.BUSY, "Ronaldo")
-//        );
-//
-//        //WHEN
-//        List<StudentCodelabProgressDto> actualCodelabs = RestAssured
-//                .given()
-//                .contentType(JSON)
-//                .when()
-//                .port(port)
-//                .get("/students/1/codelabs")
-//                .then()
-//                .assertThat()
-//                .statusCode(HttpStatus.OK.value())
-//                .extract().body().jsonPath().getList(".", StudentCodelabProgressDto.class);
-//
-//        //THEN
-//        Assertions.assertThat(actualCodelabs).containsAll(expectedCodelabs);
-//    }
+    @Test
+    void whenGetAllCodelabsForStudentId_thenCodelabsReturns() {
+        //GIVEN
+        List<StudentCodelabProgressDto> expectedCodelabs = List.of(
+                new StudentCodelabProgressDto(CodelabProgress.DONE, "Variables"),
+                new StudentCodelabProgressDto(CodelabProgress.BUSY, "Streams")
+        );
+
+        //WHEN
+        List<StudentCodelabProgressDto> actualCodelabs = RestAssured
+                .given()
+                .contentType(JSON)
+                .when()
+                .port(port)
+                .get("/students/1/codelabs")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract().body().jsonPath().getList(".", StudentCodelabProgressDto.class);
+
+        //THEN
+        Assertions.assertThat(actualCodelabs).containsAll(expectedCodelabs);
+    }
 
     @Test
     void givenStudentIdThatDoesNotExist_whenGetAllCodelabsForStudentId_thenNotFoundIsReturned() {

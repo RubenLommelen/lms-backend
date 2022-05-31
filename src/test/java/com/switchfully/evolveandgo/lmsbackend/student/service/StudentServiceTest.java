@@ -24,7 +24,7 @@ class StudentServiceTest {
 
     @Test
     void GivenStudentId_WhenIdExists_ThenFindStudentByID() {
-        long id = 1;
+        long id = 3;
         Student expectedStudent = new Student("rinaldo@spaghetto.be", "Rinaldo", "Spaghetto");
         Student actualStudent = studentService.findById(id);
 
