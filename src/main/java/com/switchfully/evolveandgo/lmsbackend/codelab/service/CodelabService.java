@@ -11,7 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CodelabService {
@@ -60,32 +62,27 @@ public class CodelabService {
         return studentCodelabProgressList;
     }
 
-    public void saveCodelabProgress(List<CodelabProgressDto> codelabProgressDtoList, Long id) {
+    public boolean saveCodelabProgress(List<CodelabProgressDto> codelabProgressDtoList, Long id) {
         Student student = studentService.findById(id);
-        List<StudentCodelabProgress> codelabsForStudent = getStudentCodelabProgressList(student);
 
-        for (CodelabProgressDto codelabProgressDto : codelabProgressDtoList) {
-            for (StudentCodelabProgress studentCodelabProgress : codelabsForStudent) {
-                if (checkIfCodeLabExists(codelabProgressDtoList, studentCodelabProgress)){
-                    studentCodelabProgress.setProgress(codelabProgressDto.getProgress());
-                    studentCodelabProgressJpaRepository.save(studentCodelabProgress);
-                    break;
-                }
-                else {
+        try{
+            for (CodelabProgressDto codelabProgressDto : codelabProgressDtoList) {
+
+                if (studentCodelabProgressJpaRepository.existsByCodelabIdAndStudentId(codelabProgressDto.getCodelabId(), codelabProgressDto.getStudentId())) {
+                    StudentCodelabProgress studentProgress = studentCodelabProgressJpaRepository.findByCodelabIdAndStudentId(codelabProgressDto.getCodelabId(), codelabProgressDto.getStudentId());
+                    studentProgress.setProgress(codelabProgressDto.getProgress());
+                    studentCodelabProgressJpaRepository.save(studentProgress);
+                } else {
                     Codelab codelab = codelabJpaRepository.findById(codelabProgressDto.getCodelabId()).get();
-                    studentCodelabProgressJpaRepository.save(new StudentCodelabProgress(codelabProgressDto.getProgress(),codelab, student));
+                    studentCodelabProgressJpaRepository.save(new StudentCodelabProgress(codelabProgressDto.getProgress(), codelab, student));
                 }
             }
+            return true;
+        }catch (Exception e){
+            return false;
         }
+
     }
 
-    public boolean checkIfCodeLabExists(List<CodelabProgressDto> codelabProgressDtoList, StudentCodelabProgress studentCodelabProgress) {
-        for (CodelabProgressDto codelabProgressDto : codelabProgressDtoList) {
-            if (codelabProgressDto.getCodelabId() == studentCodelabProgress.getCodelab().getId()) {
-                return true;
-            }
-        }
-        return false;
-    }
 }
 
