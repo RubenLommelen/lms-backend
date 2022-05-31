@@ -91,12 +91,14 @@ class CodelabControllerIntegrationTest {
     void whenProgressUpdatePosted_thenProgressIsSaved() {
         //GIVEN
 
-        Codelab codelab = codelabJpaRepository.findById(1L).get();
+        Codelab codelab1 = codelabJpaRepository.findById(1L).get();
         Codelab codelab2 = codelabJpaRepository.findById(2L).get();
         Long studentId = 1L;
+        CodelabProgressDto codelabProgressDto1 = new CodelabProgressDto(studentId, CodelabProgress.BUSY, codelab1.getId(), codelab1.getName());
+        CodelabProgressDto codelabProgressDto2 = new CodelabProgressDto(studentId, CodelabProgress.STUCK, codelab2.getId(), codelab2.getName());
         List<CodelabProgressDto> codelabProgressDtoList = List.of(
-                new CodelabProgressDto(studentId, CodelabProgress.BUSY, codelab.getId(), codelab.getName()),
-                new CodelabProgressDto(studentId, CodelabProgress.STUCK, codelab2.getId(), codelab2.getName())
+                codelabProgressDto1,
+                codelabProgressDto2
         );
 
         //WHEN
@@ -109,13 +111,17 @@ class CodelabControllerIntegrationTest {
                 .post("/students/" + studentId + "/codelabs")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.CREATED.value());
+                .statusCode(HttpStatus.OK.value());
 
         //THEN
         List<StudentCodelabProgressDto> codelabsForStudent = codelabService.getCodelabsForStudent(studentId);
         Map<Long,StudentCodelabProgressDto> actualProgressList = codelabsForStudent.stream()
-                .filter(studentCodelabProgressDto -> studentCodelabProgressDto.getCodelabId() == codelab.getId() || studentCodelabProgressDto.getCodelabId() == codelab2.getId())
+                .filter(studentCodelabProgressDto -> studentCodelabProgressDto.getCodelabId().equals(codelab1.getId()) || studentCodelabProgressDto.getCodelabId().equals(codelab2.getId()))
                 .collect(Collectors.toMap(value->value.getCodelabId(),value->value));
-        Assertions.assertThat(actualProgressList.get(1L)).isEqualTo(codelabProgressDtoList.)
+
+
+
+        Assertions.assertThat(actualProgressList.get(1L).getProgress()).isEqualTo(codelabProgressDto1.getProgress());
+        Assertions.assertThat(actualProgressList.get(2L).getProgress()).isEqualTo(codelabProgressDto2.getProgress());
     }
 }
