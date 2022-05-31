@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface StudentCodelabProgressJpaRepository extends JpaRepository<StudentCodelabProgress, Long> {
     List<StudentCodelabProgress> findByStudent(Student student);
+
+    boolean existsByCodelabAndStudent(long codelabId, long studentId);
 }

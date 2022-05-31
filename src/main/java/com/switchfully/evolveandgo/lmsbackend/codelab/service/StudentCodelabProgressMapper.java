@@ -10,7 +10,7 @@ import java.util.List;
 public class StudentCodelabProgressMapper {
 
     public StudentCodelabProgressDto toDto(StudentCodelabProgress studentCodelabProgress) {
-        return new StudentCodelabProgressDto(studentCodelabProgress.getProgress(), studentCodelabProgress.getCodelab().getName());
+        return new StudentCodelabProgressDto(studentCodelabProgress.getCodelab().getId(), studentCodelabProgress.getProgress(),studentCodelabProgress.getCodelab().getName());
     }
 
     public List<StudentCodelabProgressDto> toDtoList(List<StudentCodelabProgress> studentCodelabProgressList) {
