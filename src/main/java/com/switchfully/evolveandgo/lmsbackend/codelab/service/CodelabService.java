@@ -68,10 +68,6 @@ public class CodelabService {
         logger.info("fetching progress overview");
         Long amountOfCodelabs = codelabJpaRepository.count();
 
-        studentCodelabProgressJpaRepository.findProgressOverview().forEach(
-                e -> System.out.println("id: " + e.getStudentId() + ", codelabs: " + e.getNumberOfCompletedCodelabs())
-        );
-
         List<ProgressOverviewDto> progressOverviewDtoList = progressMapper.toDtoList(studentCodelabProgressJpaRepository.findProgressOverview());
 
         List<Long> studentIdList = progressOverviewDtoList.stream().map(progress -> progress.getStudentId()).toList();
