@@ -4,6 +4,7 @@ import com.switchfully.evolveandgo.lmsbackend.codelab.dto.CodelabProgressDto;
 import com.switchfully.evolveandgo.lmsbackend.student.dto.StudentCodelabProgressDto;
 import com.switchfully.evolveandgo.lmsbackend.codelab.service.CodelabService;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,13 +19,14 @@ public class CodelabController {
         this.codelabService = codelabService;
     }
 
+    @PreAuthorize("hasAuthority('VIEW_CODELAB_PROGRESS')")
     @GetMapping(path = "/students/{id}/codelabs", produces = MediaType.APPLICATION_JSON_VALUE)
-    private List<StudentCodelabProgressDto> getCodelabsForStudent(@PathVariable Long id) {
+    public List<StudentCodelabProgressDto> getCodelabsForStudent(@PathVariable Long id) {
         return codelabService.getCodelabsForStudent(id);
     }
 
     @PostMapping(path = "/students/{id}/codelabs", consumes = MediaType.APPLICATION_JSON_VALUE)
-    private boolean saveCodelabsProgess(@PathVariable Long id, @RequestBody List<CodelabProgressDto> codelabProgressDto) {
+    public boolean saveCodelabsProgess(@PathVariable Long id, @RequestBody List<CodelabProgressDto> codelabProgressDto) {
        return codelabService.saveCodelabProgress(codelabProgressDto, id);
     }
 
