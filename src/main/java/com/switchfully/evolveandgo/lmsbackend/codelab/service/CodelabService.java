@@ -1,10 +1,12 @@
 package com.switchfully.evolveandgo.lmsbackend.codelab.service;
 
-import com.switchfully.evolveandgo.lmsbackend.codelab.domain.*;
+import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabJpaRepository;
+import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabProgress;
+import com.switchfully.evolveandgo.lmsbackend.codelab.domain.StudentCodelabProgress;
+import com.switchfully.evolveandgo.lmsbackend.codelab.domain.StudentCodelabProgressJpaRepository;
 import com.switchfully.evolveandgo.lmsbackend.progress.dto.ProgressOverviewDto;
-import com.switchfully.evolveandgo.lmsbackend.student.dto.StudentCodelabProgressDto;
 import com.switchfully.evolveandgo.lmsbackend.student.domain.Student;
-import com.switchfully.evolveandgo.lmsbackend.student.domain.StudentJpaRepository;
+import com.switchfully.evolveandgo.lmsbackend.student.dto.StudentCodelabProgressDto;
 import com.switchfully.evolveandgo.lmsbackend.student.service.StudentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +58,9 @@ public class CodelabService {
     }
 
     public List<ProgressOverviewDto> getProgressOverview() {
-        System.out.println(studentCodelabProgressJpaRepository.findProgressOverview().size());
+        studentCodelabProgressJpaRepository.findProgressOverview().forEach(
+                e -> System.out.println("id: " + e.getStudentId() + ", codelabs: " + e.getNumberOfCompletedCodelabs())
+        );
         return List.of(
                 new ProgressOverviewDto(5L, "Alperen", 3, 12),
                 new ProgressOverviewDto(9L, "BakerTheHero", 11, 12),
