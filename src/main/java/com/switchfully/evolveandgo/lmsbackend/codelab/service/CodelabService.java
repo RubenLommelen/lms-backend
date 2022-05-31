@@ -4,7 +4,6 @@ import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabJpaRepositor
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabProgress;
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.StudentCodelabProgress;
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.StudentCodelabProgressJpaRepository;
-import com.switchfully.evolveandgo.lmsbackend.progress.domain.ProgressOverview;
 import com.switchfully.evolveandgo.lmsbackend.progress.dto.ProgressOverviewDto;
 import com.switchfully.evolveandgo.lmsbackend.progress.service.ProgressMapper;
 import com.switchfully.evolveandgo.lmsbackend.student.domain.Student;
@@ -16,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CodelabService {
@@ -67,6 +65,7 @@ public class CodelabService {
 
     public List<ProgressOverviewDto> getProgressOverview() {
 
+        logger.info("fetching progress overview");
         Long amountOfCodelabs = codelabJpaRepository.count();
 
         studentCodelabProgressJpaRepository.findProgressOverview().forEach(
@@ -87,6 +86,7 @@ public class CodelabService {
                                 new ProgressOverviewDto(student.getId(), student.getDisplayName(), 0, amountOfCodelabs)
                         )
         );
+        logger.info("fetched progress overview");
         return progressOverviewDtoList;
     }
 }
