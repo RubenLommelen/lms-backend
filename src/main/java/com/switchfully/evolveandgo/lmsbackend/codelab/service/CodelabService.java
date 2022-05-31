@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CodelabService {
@@ -59,9 +60,32 @@ public class CodelabService {
         return studentCodelabProgressList;
     }
 
-    public void saveCodelabProgress(List<CodelabProgressDto> codelabProgressDto) {
+    public void saveCodelabProgress(List<CodelabProgressDto> codelabProgressDtoList, Long id) {
+        Student student = studentService.findById(id);
+        List<StudentCodelabProgress> codelabsForStudent = getStudentCodelabProgressList(student);
 
+        for (CodelabProgressDto codelabProgressDto : codelabProgressDtoList) {
+            for (StudentCodelabProgress studentCodelabProgress : codelabsForStudent) {
+                if (checkIfCodeLabExists(codelabProgressDtoList, studentCodelabProgress)){
+                    studentCodelabProgress.setProgress(codelabProgressDto.getProgress());
+                    studentCodelabProgressJpaRepository.save(studentCodelabProgress);
+                    break;
+                }
+                else {
+                    Codelab codelab = codelabJpaRepository.findById(codelabProgressDto.getCodelabId()).get();
+                    studentCodelabProgressJpaRepository.save(new StudentCodelabProgress(codelabProgressDto.getProgress(),codelab, student));
+                }
+            }
+        }
+    }
 
+    public boolean checkIfCodeLabExists(List<CodelabProgressDto> codelabProgressDtoList, StudentCodelabProgress studentCodelabProgress) {
+        for (CodelabProgressDto codelabProgressDto : codelabProgressDtoList) {
+            if (codelabProgressDto.getCodelabId() == studentCodelabProgress.getCodelab().getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
