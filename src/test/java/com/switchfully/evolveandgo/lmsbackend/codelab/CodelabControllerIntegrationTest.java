@@ -1,7 +1,9 @@
 package com.switchfully.evolveandgo.lmsbackend.codelab;
 
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabProgress;
+import com.switchfully.evolveandgo.lmsbackend.codelab.domain.StudentCodelabProgressJpaRepository;
 import com.switchfully.evolveandgo.lmsbackend.progress.dto.ProgressOverviewDto;
+import com.switchfully.evolveandgo.lmsbackend.progress.service.ProgressMapper;
 import com.switchfully.evolveandgo.lmsbackend.student.dto.StudentCodelabProgressDto;
 import com.switchfully.evolveandgo.lmsbackend.codelab.service.CodelabService;
 import com.switchfully.evolveandgo.lmsbackend.student.exception.StudentNotFoundException;
@@ -29,6 +31,12 @@ class CodelabControllerIntegrationTest {
 
     @Autowired
     private CodelabService codelabService;
+
+    @Autowired
+    private StudentCodelabProgressJpaRepository studentCodelabProgressJpaRepository;
+
+    @Autowired
+    private ProgressMapper progressMapper;
 
     @Test
     void whenGetAllCodelabsForStudentId_thenCodelabsReturns() {
@@ -80,12 +88,7 @@ class CodelabControllerIntegrationTest {
 
     @Test
     void given_whenGetCodelabProgressForAllStudents_thenProgressReturned() {
-        List<ProgressOverviewDto> expected = List.of(
-                new ProgressOverviewDto(5L, "Alperen", 3, 12),
-                new ProgressOverviewDto(9L, "BakerTheHero", 11, 12),
-                new ProgressOverviewDto(1L, "Ruben", 0, 12),
-                new ProgressOverviewDto(6L, "Rinaldo", 12, 12)
-        );
+        List<ProgressOverviewDto> expected = progressMapper.toDtoList(studentCodelabProgressJpaRepository.findProgressOverview());
 
         // WHEN
         List<ProgressOverviewDto> actual = RestAssured

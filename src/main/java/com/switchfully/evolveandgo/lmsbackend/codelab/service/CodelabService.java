@@ -4,8 +4,11 @@ import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabJpaRepositor
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabProgress;
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.StudentCodelabProgress;
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.StudentCodelabProgressJpaRepository;
+import com.switchfully.evolveandgo.lmsbackend.progress.domain.ProgressOverview;
 import com.switchfully.evolveandgo.lmsbackend.progress.dto.ProgressOverviewDto;
+import com.switchfully.evolveandgo.lmsbackend.progress.service.ProgressMapper;
 import com.switchfully.evolveandgo.lmsbackend.student.domain.Student;
+import com.switchfully.evolveandgo.lmsbackend.student.domain.StudentJpaRepository;
 import com.switchfully.evolveandgo.lmsbackend.student.dto.StudentCodelabProgressDto;
 import com.switchfully.evolveandgo.lmsbackend.student.service.StudentService;
 import org.slf4j.Logger;
@@ -13,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CodelabService {
@@ -23,12 +27,16 @@ public class CodelabService {
     private final StudentCodelabProgressJpaRepository studentCodelabProgressJpaRepository;
     private final CodelabJpaRepository codelabJpaRepository;
     private final StudentService studentService;
+    private final ProgressMapper progressMapper;
+    private final StudentJpaRepository studentJpaRepository;
 
-    public CodelabService(StudentCodelabProgressMapper studentCodelabProgressMapper, StudentCodelabProgressJpaRepository studentCodelabProgressJpaRepository, CodelabJpaRepository codelabJpaRepository, StudentService studentService) {
+    public CodelabService(StudentCodelabProgressMapper studentCodelabProgressMapper, StudentCodelabProgressJpaRepository studentCodelabProgressJpaRepository, CodelabJpaRepository codelabJpaRepository, StudentService studentService, ProgressMapper progressMapper, StudentJpaRepository studentJpaRepository) {
         this.studentCodelabProgressMapper = studentCodelabProgressMapper;
         this.studentCodelabProgressJpaRepository = studentCodelabProgressJpaRepository;
         this.codelabJpaRepository = codelabJpaRepository;
         this.studentService = studentService;
+        this.progressMapper = progressMapper;
+        this.studentJpaRepository = studentJpaRepository;
     }
 
     public List<StudentCodelabProgressDto> getCodelabsForStudent(Long id) {
@@ -58,15 +66,28 @@ public class CodelabService {
     }
 
     public List<ProgressOverviewDto> getProgressOverview() {
+
+        Long amountOfCodelabs = codelabJpaRepository.count();
+
         studentCodelabProgressJpaRepository.findProgressOverview().forEach(
                 e -> System.out.println("id: " + e.getStudentId() + ", codelabs: " + e.getNumberOfCompletedCodelabs())
         );
-        return List.of(
-                new ProgressOverviewDto(5L, "Alperen", 3, 12),
-                new ProgressOverviewDto(9L, "BakerTheHero", 11, 12),
-                new ProgressOverviewDto(1L, "Ruben", 0, 12),
-                new ProgressOverviewDto(6L, "Rinaldo", 12, 12)
+
+        List<ProgressOverviewDto> progressOverviewDtoList = progressMapper.toDtoList(studentCodelabProgressJpaRepository.findProgressOverview());
+
+        List<Long> studentIdList = progressOverviewDtoList.stream().map(progress -> progress.getStudentId()).toList();
+
+        List<Student> studentsWithNoProgress = studentJpaRepository.findAll().stream()
+                .filter(student -> !studentIdList.contains(student.getId()))
+                .toList();
+
+        studentsWithNoProgress.forEach(
+                student ->
+                        progressOverviewDtoList.add(
+                                new ProgressOverviewDto(student.getId(), student.getDisplayName(), 0, amountOfCodelabs)
+                        )
         );
+        return progressOverviewDtoList;
     }
 }
 
