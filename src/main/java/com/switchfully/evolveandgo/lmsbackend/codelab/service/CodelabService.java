@@ -1,6 +1,7 @@
 package com.switchfully.evolveandgo.lmsbackend.codelab.service;
 
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.*;
+import com.switchfully.evolveandgo.lmsbackend.codelab.dto.CodelabProgressDto;
 import com.switchfully.evolveandgo.lmsbackend.progress.dto.ProgressOverviewDto;
 import com.switchfully.evolveandgo.lmsbackend.progress.service.ProgressMapper;
 import com.switchfully.evolveandgo.lmsbackend.student.dto.StudentCodelabProgressDto;
