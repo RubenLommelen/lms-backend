@@ -10,6 +10,9 @@ import java.util.List;
 public interface StudentCodelabProgressJpaRepository extends JpaRepository<StudentCodelabProgress, Long> {
     List<StudentCodelabProgress> findByStudent(Student student);
 
+    boolean existsByCodelabIdAndStudentId(long codelabId, long studentId);
+    StudentCodelabProgress findByCodelabIdAndStudentId(long codelabId, long studentId);
+
     @Query(value = "SELECT fk_student as studentId, count(progress) as numberOfCompletedCodelabs " +
             "FROM codelab_progress " +
             "where progress in ('DONE', 'FEEDBACK_NEEDED') " +

@@ -1,14 +1,11 @@
 package com.switchfully.evolveandgo.lmsbackend.codelab.service;
 
-import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabJpaRepository;
-import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabProgress;
-import com.switchfully.evolveandgo.lmsbackend.codelab.domain.StudentCodelabProgress;
-import com.switchfully.evolveandgo.lmsbackend.codelab.domain.StudentCodelabProgressJpaRepository;
+import com.switchfully.evolveandgo.lmsbackend.codelab.domain.*;
 import com.switchfully.evolveandgo.lmsbackend.progress.dto.ProgressOverviewDto;
 import com.switchfully.evolveandgo.lmsbackend.progress.service.ProgressMapper;
+import com.switchfully.evolveandgo.lmsbackend.student.dto.StudentCodelabProgressDto;
 import com.switchfully.evolveandgo.lmsbackend.student.domain.Student;
 import com.switchfully.evolveandgo.lmsbackend.student.domain.StudentJpaRepository;
-import com.switchfully.evolveandgo.lmsbackend.student.dto.StudentCodelabProgressDto;
 import com.switchfully.evolveandgo.lmsbackend.student.service.StudentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +59,29 @@ public class CodelabService {
         studentCodelabProgressList.addAll(codelabsNotStartedList);
         return studentCodelabProgressList;
     }
+
+    public boolean saveCodelabProgress(List<CodelabProgressDto> codelabProgressDtoList, Long id) {
+        Student student = studentService.findById(id);
+
+        try{
+            for (CodelabProgressDto codelabProgressDto : codelabProgressDtoList) {
+
+                if (studentCodelabProgressJpaRepository.existsByCodelabIdAndStudentId(codelabProgressDto.getCodelabId(), codelabProgressDto.getStudentId())) {
+                    StudentCodelabProgress studentProgress = studentCodelabProgressJpaRepository.findByCodelabIdAndStudentId(codelabProgressDto.getCodelabId(), codelabProgressDto.getStudentId());
+                    studentProgress.setProgress(codelabProgressDto.getProgress());
+                    studentCodelabProgressJpaRepository.save(studentProgress);
+                } else {
+                    Codelab codelab = codelabJpaRepository.findById(codelabProgressDto.getCodelabId()).get();
+                    studentCodelabProgressJpaRepository.save(new StudentCodelabProgress(codelabProgressDto.getProgress(), codelab, student));
+                }
+            }
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+
+    }
+
 
     public List<ProgressOverviewDto> getProgressOverview() {
 

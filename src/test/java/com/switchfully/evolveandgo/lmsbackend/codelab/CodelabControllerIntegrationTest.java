@@ -4,6 +4,7 @@ import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabProgress;
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.StudentCodelabProgressJpaRepository;
 import com.switchfully.evolveandgo.lmsbackend.progress.dto.ProgressOverviewDto;
 import com.switchfully.evolveandgo.lmsbackend.progress.service.ProgressMapper;
+import com.switchfully.evolveandgo.lmsbackend.student.domain.StudentJpaRepository;
 import com.switchfully.evolveandgo.lmsbackend.student.dto.StudentCodelabProgressDto;
 import com.switchfully.evolveandgo.lmsbackend.codelab.service.CodelabService;
 import com.switchfully.evolveandgo.lmsbackend.student.exception.StudentNotFoundException;
@@ -38,13 +39,15 @@ class CodelabControllerIntegrationTest {
     @Autowired
     private ProgressMapper progressMapper;
 
+    @Autowired
+    private StudentJpaRepository studentJpaRepository;
+
     @Test
     void whenGetAllCodelabsForStudentId_thenCodelabsReturns() {
         //GIVEN
-        List<StudentCodelabProgressDto> expectedCodelabs = List.of(
-                new StudentCodelabProgressDto(CodelabProgress.DONE, "Variables"),
-                new StudentCodelabProgressDto(CodelabProgress.BUSY, "Streams")
-        );
+        List<StudentCodelabProgressDto> expectedCodelabs = codelabService.getCodelabsForStudent(1L);
+
+        System.out.println(expectedCodelabs.toString());
 
         //WHEN
         List<StudentCodelabProgressDto> actualCodelabs = RestAssured

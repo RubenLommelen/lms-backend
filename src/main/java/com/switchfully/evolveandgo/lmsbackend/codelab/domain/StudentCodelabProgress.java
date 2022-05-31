@@ -49,4 +49,8 @@ public class StudentCodelabProgress {
     public Student getStudent() {
         return student;
     }
+
+    public void setProgress(CodelabProgress progress) {
+        this.progress = progress;
+    }
 }
