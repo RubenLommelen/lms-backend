@@ -13,7 +13,7 @@ import com.switchfully.evolveandgo.lmsbackend.codelab.domain.StudentCodelabProgr
 import com.switchfully.evolveandgo.lmsbackend.student.domain.StudentJpaRepository;
 import com.switchfully.evolveandgo.lmsbackend.student.dto.StudentCodelabProgressDto;
 import com.switchfully.evolveandgo.lmsbackend.codelab.service.CodelabService;
-import com.switchfully.evolveandgo.lmsbackend.student.exception.StudentNotFoundException;
+import com.switchfully.evolveandgo.lmsbackend.student.exception.UserNotFoundException;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
@@ -97,7 +97,7 @@ class CodelabControllerIntegrationTest {
 
         //THEN
         Assertions.assertThat(thrown)
-                .isInstanceOf(StudentNotFoundException.class)
+                .isInstanceOf(UserNotFoundException.class)
                 .hasMessage("No student found for: " + studentId);
     }
 

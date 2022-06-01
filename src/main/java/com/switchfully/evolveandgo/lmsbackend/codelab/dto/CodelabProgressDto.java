@@ -30,14 +30,4 @@ public class CodelabProgressDto {
     public String getCodelabName() {
         return codelabName;
     }
-
-    @Override
-    public String toString() {
-        return "CodelabProgressDto{" +
-                "studentId=" + studentId +
-                ", progress=" + progress +
-                ", codelabId=" + codelabId +
-                ", codelabName='" + codelabName + '\'' +
-                '}';
-    }
 }

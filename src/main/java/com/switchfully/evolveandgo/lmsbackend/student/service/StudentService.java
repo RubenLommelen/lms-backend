@@ -1,6 +1,6 @@
 package com.switchfully.evolveandgo.lmsbackend.student.service;
 
-import com.switchfully.evolveandgo.lmsbackend.student.exception.StudentNotFoundException;
+import com.switchfully.evolveandgo.lmsbackend.student.exception.UserNotFoundException;
 import com.switchfully.evolveandgo.lmsbackend.student.domain.Student;
 import com.switchfully.evolveandgo.lmsbackend.student.domain.StudentJpaRepository;
 import org.springframework.stereotype.Service;
@@ -15,13 +15,13 @@ public class StudentService {
 
     public Student findById(Long id){
         return studentJpaRepository.findById(id).orElseThrow(() -> {
-            throw new StudentNotFoundException(id);
+            throw new UserNotFoundException(id);
         });
     }
 
     public Student findByEmail(String email){
         return studentJpaRepository.findByEmail(email).orElseThrow(() -> {
-            throw new StudentNotFoundException(email);
+            throw new UserNotFoundException(email);
         });
     }
 

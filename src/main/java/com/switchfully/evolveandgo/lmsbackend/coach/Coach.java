@@ -1,4 +1,4 @@
-package com.switchfully.evolveandgo.lmsbackend.student.domain;
+package com.switchfully.evolveandgo.lmsbackend.coach;
 
 import com.switchfully.evolveandgo.lmsbackend.infrastructure.User;
 
@@ -6,11 +6,11 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "STUDENT")
-public class Student implements User {
+@Table(name = "COACH")
+public class Coach implements User {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_seq")
-    @SequenceGenerator(name = "student_seq", sequenceName = "student_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "coach_seq")
+    @SequenceGenerator(name = "coach_seq", sequenceName = "coach_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "EMAIL")
@@ -23,10 +23,12 @@ public class Student implements User {
     private String password;
 
 
-    public Student() {
+
+
+    public Coach() {
     }
 
-    public Student(String email, String displayName, String password) {
+    public Coach(String email, String displayName, String password) {
         this.email = email;
         this.displayName = displayName;
         this.password = password;
@@ -52,14 +54,12 @@ public class Student implements User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Student student = (Student) o;
-        return Objects.equals(email, student.email) && Objects.equals(displayName, student.displayName) && Objects.equals(password, student.password);
+        Coach coach = (Coach) o;
+        return Objects.equals(email, coach.email) && Objects.equals(displayName, coach.displayName) && Objects.equals(password, coach.password);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(email, displayName, password);
     }
-
-
 }

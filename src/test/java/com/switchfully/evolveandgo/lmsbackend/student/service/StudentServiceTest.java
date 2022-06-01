@@ -1,7 +1,7 @@
 package com.switchfully.evolveandgo.lmsbackend.student.service;
 
 import com.switchfully.evolveandgo.lmsbackend.student.domain.Student;
-import com.switchfully.evolveandgo.lmsbackend.student.exception.StudentNotFoundException;
+import com.switchfully.evolveandgo.lmsbackend.student.exception.UserNotFoundException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,7 @@ class StudentServiceTest {
 
         //THEN
         Assertions.assertThat(thrown)
-                .isInstanceOf(StudentNotFoundException.class)
+                .isInstanceOf(UserNotFoundException.class)
                 .hasMessage("No student found for: " + email);
 
     }

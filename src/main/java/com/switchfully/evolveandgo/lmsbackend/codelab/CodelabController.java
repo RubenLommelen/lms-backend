@@ -26,6 +26,7 @@ public class CodelabController {
         return codelabService.getCodelabsForStudent(id);
     }
 
+    @PreAuthorize("hasAuthority('SAVE_CODELAB_PROGRESS')")
     @PostMapping(path = "/students/{id}/codelabs", consumes = MediaType.APPLICATION_JSON_VALUE)
     private void saveCodelabsProgess(@PathVariable Long id, @RequestBody List<CodelabProgressDto> codelabProgressDto) {
         codelabService.saveCodelabProgress(codelabProgressDto, id);
