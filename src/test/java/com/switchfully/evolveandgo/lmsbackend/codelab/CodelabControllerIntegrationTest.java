@@ -159,4 +159,31 @@ class CodelabControllerIntegrationTest {
         // THEN
         Assertions.assertThat(actual).containsAll(expected);
     }
+
+    @Test
+    void givenNewlyCreatedCodelab_whenGetAllCodelabs_thenCodelabsSortedByAscendingCreationDate() {
+        //GIVEN
+        Long studentId = 1L;
+        Long eldestCodelabId = 99999998L;
+        Long mostRecentCodelabId = 99999999L;
+
+
+        //WHEN
+        List<StudentCodelabProgressDto> actualCodelabs = RestAssured
+                .given()
+                .contentType(JSON)
+                .when()
+                .port(port)
+                .get("/students/" + studentId + "/codelabs")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract().body().jsonPath().getList(".", StudentCodelabProgressDto.class);
+
+        //THEN
+        System.out.println(actualCodelabs);
+        Assertions.assertThat(actualCodelabs.get(actualCodelabs.size() - 1).getCodelabId()).isEqualTo(mostRecentCodelabId);
+        Assertions.assertThat(actualCodelabs.get(0).getCodelabId()).isEqualTo(eldestCodelabId);
+
+    }
 }

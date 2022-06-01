@@ -2,18 +2,22 @@ package com.switchfully.evolveandgo.lmsbackend.student.dto;
 
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabProgress;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 public class StudentCodelabProgressDto {
     private final Long codelabId;
     private final CodelabProgress progress;
     private final String codelabName;
+    private final Date codelabCreationDate;
 
-    public StudentCodelabProgressDto(Long codelabId,CodelabProgress progress, String codelabName) {
+    public StudentCodelabProgressDto(Long codelabId, CodelabProgress progress, String codelabName, Timestamp codelabCreationDate) {
         this.codelabId = codelabId;
 
         this.progress = progress;
         this.codelabName = codelabName;
+        this.codelabCreationDate = codelabCreationDate;
     }
 
     public Long getCodelabId() {
@@ -27,6 +31,10 @@ public class StudentCodelabProgressDto {
 
     public String getCodelabName() {
         return codelabName;
+    }
+
+    public Date getCodelabCreationDate() {
+        return codelabCreationDate;
     }
 
     @Override
@@ -48,6 +56,7 @@ public class StudentCodelabProgressDto {
                 "codelabId=" + codelabId +
                 ", progress=" + progress +
                 ", codelabName='" + codelabName + '\'' +
+                ", codelabCreationDate=" + codelabCreationDate +
                 '}';
     }
 }

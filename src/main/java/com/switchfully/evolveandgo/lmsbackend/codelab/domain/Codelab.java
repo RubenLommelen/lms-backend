@@ -1,9 +1,7 @@
 package com.switchfully.evolveandgo.lmsbackend.codelab.domain;
 
-import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabProgress;
-
 import javax.persistence.*;
-import java.util.List;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -18,17 +16,25 @@ public class Codelab {
     @Column(name = "NAME")
     private String name;
 
+    @Column(name = "CREATION_DATE")
+    private Timestamp creationDate;
+
 
     public Codelab() {
     }
 
 
-    public Codelab(String name) {
+    public Codelab(String name, Timestamp creationDate) {
         this.name = name;
+        this.creationDate = creationDate;
     }
 
     public String getName() {
         return name;
+    }
+
+    public Timestamp getCreationDate() {
+        return creationDate;
     }
 
     public Long getId() {

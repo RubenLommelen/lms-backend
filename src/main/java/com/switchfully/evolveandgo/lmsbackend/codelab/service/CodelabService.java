@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -42,7 +44,9 @@ public class CodelabService {
 
         List<StudentCodelabProgress> studentCodelabProgressList = getStudentCodelabProgressList(student);
 
-        return studentCodelabProgressMapper.toDtoList(studentCodelabProgressList);
+        List<StudentCodelabProgressDto> studentCodelabProgressDtoList = studentCodelabProgressMapper.toDtoList(studentCodelabProgressList);
+        studentCodelabProgressDtoList.sort(Comparator.comparing(studentCodelabProgressDto -> studentCodelabProgressDto.getCodelabCreationDate()));
+        return studentCodelabProgressDtoList;
     }
 
     private List<StudentCodelabProgress> getStudentCodelabProgressList(Student student) {
@@ -101,5 +105,6 @@ public class CodelabService {
         logger.info("fetched progress overview");
         return progressOverviewDtoList;
     }
+
 }
 
