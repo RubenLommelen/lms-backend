@@ -12,3 +12,4 @@ values (nextVal('codelab_seq'), 'Ronaldo', current_timestamp);
 
 INSERT INTO codelab_progress
 values (nextVal('codelab_progress_seq'), currval('codelab_seq'), 'BUSY', currval('student_seq'));
+

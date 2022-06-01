@@ -4,7 +4,13 @@ import com.switchfully.evolveandgo.lmsbackend.codelab.domain.Codelab;
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabJpaRepository;
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabProgress;
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.StudentCodelabProgressJpaRepository;
+import com.switchfully.evolveandgo.lmsbackend.progress.dto.ProgressOverviewDto;
+import com.switchfully.evolveandgo.lmsbackend.progress.service.ProgressMapper;
+import com.switchfully.evolveandgo.lmsbackend.student.domain.StudentJpaRepository;
+import com.switchfully.evolveandgo.lmsbackend.codelab.domain.StudentCodelabProgressJpaRepository;
 import com.switchfully.evolveandgo.lmsbackend.codelab.dto.CodelabProgressDto;
+import com.switchfully.evolveandgo.lmsbackend.codelab.domain.StudentCodelabProgressJpaRepository;
+import com.switchfully.evolveandgo.lmsbackend.student.domain.StudentJpaRepository;
 import com.switchfully.evolveandgo.lmsbackend.student.dto.StudentCodelabProgressDto;
 import com.switchfully.evolveandgo.lmsbackend.codelab.service.CodelabService;
 import com.switchfully.evolveandgo.lmsbackend.student.exception.StudentNotFoundException;
@@ -38,6 +44,15 @@ class CodelabControllerIntegrationTest {
     private CodelabService codelabService;
     @Autowired
     private CodelabJpaRepository codelabJpaRepository;
+
+    @Autowired
+    private StudentCodelabProgressJpaRepository studentCodelabProgressJpaRepository;
+
+    @Autowired
+    private ProgressMapper progressMapper;
+
+    @Autowired
+    private StudentJpaRepository studentJpaRepository;
 
     @Test
     void whenGetAllCodelabsForStudentId_thenCodelabsReturns() {
@@ -123,5 +138,25 @@ class CodelabControllerIntegrationTest {
 
         Assertions.assertThat(actualProgressList.get(1L).getProgress()).isEqualTo(codelabProgressDto1.getProgress());
         Assertions.assertThat(actualProgressList.get(2L).getProgress()).isEqualTo(codelabProgressDto2.getProgress());
+    }
+
+    @Test
+    void given_whenGetCodelabProgressForAllStudents_thenProgressReturned() {
+        List<ProgressOverviewDto> expected = progressMapper.toDtoList(studentCodelabProgressJpaRepository.findProgressOverview());
+
+        // WHEN
+        List<ProgressOverviewDto> actual = RestAssured
+                .given()
+                .contentType(JSON)
+                .when()
+                .port(port)
+                .get("/progress")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract().body().jsonPath().getList(".", ProgressOverviewDto.class);
+
+        // THEN
+        Assertions.assertThat(actual).containsAll(expected);
     }
 }

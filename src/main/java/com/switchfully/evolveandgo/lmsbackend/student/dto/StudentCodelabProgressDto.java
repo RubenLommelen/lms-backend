@@ -5,9 +5,9 @@ import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabProgress;
 import java.util.Objects;
 
 public class StudentCodelabProgressDto {
-    private Long codelabId;
-    private CodelabProgress progress;
-    private String codelabName;
+    private final Long codelabId;
+    private final CodelabProgress progress;
+    private final String codelabName;
 
     public StudentCodelabProgressDto(Long codelabId,CodelabProgress progress, String codelabName) {
         this.codelabId = codelabId;
