@@ -1,9 +1,13 @@
 package com.switchfully.evolveandgo.lmsbackend.login;
 
+import com.switchfully.evolveandgo.lmsbackend.infrastructure.User;
 import com.switchfully.evolveandgo.lmsbackend.login.dto.LoginDto;
+import com.switchfully.evolveandgo.lmsbackend.login.dto.TokenDto;
+import com.switchfully.evolveandgo.lmsbackend.login.dto.UserType;
 import com.switchfully.evolveandgo.lmsbackend.login.service.LoginService;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -168,6 +172,45 @@ class LoginControllerTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void givenLoginDtoOfStudent_whenLoggedIn_thenUserTypeEqualsStudent() {
+        LoginDto loginDto = new LoginDto("student@mail.com", "pwd");
+
+        TokenDto tokenDto = RestAssured.given()
+                .port(port)
+                .body(loginDto)
+                .contentType(ContentType.JSON)
+                .when()
+                .accept(ContentType.JSON)
+                .post("/login")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .as(TokenDto.class);
+
+        Assertions.assertThat(tokenDto.getUserType()).isEqualTo(UserType.STUDENT);
+    }
+    @Test
+    void givenLoginDtoOfCoach_whenLoggedIn_thenUserTypeEqualsCoach() {
+        LoginDto loginDto = new LoginDto("oscar@mail.com", "pwd");
+
+        TokenDto tokenDto = RestAssured.given()
+                .port(port)
+                .body(loginDto)
+                .contentType(ContentType.JSON)
+                .when()
+                .accept(ContentType.JSON)
+                .post("/login")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .as(TokenDto.class);
+
+        Assertions.assertThat(tokenDto.getUserType()).isEqualTo(UserType.COACH);
     }
 
 

@@ -20,9 +20,10 @@ public class StudentService {
     }
 
     public Student findByEmail(String email){
-        return studentJpaRepository.findByEmail(email).orElseThrow(() -> {
-            throw new StudentNotFoundException(email);
-        });
+//        return studentJpaRepository.findByEmail(email).orElseThrow(() -> {
+//            throw new StudentNotFoundException(email);
+//        });
+        return studentJpaRepository.findByEmail(email).orElse(null);
     }
 
 }
