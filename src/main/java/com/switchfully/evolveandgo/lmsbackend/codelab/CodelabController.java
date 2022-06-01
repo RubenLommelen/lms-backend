@@ -22,7 +22,7 @@ public class CodelabController {
 
     @PreAuthorize("hasAuthority('VIEW_CODELAB_PROGRESS')")
     @GetMapping(path = "/students/{id}/codelabs", produces = MediaType.APPLICATION_JSON_VALUE)
-    private List<StudentCodelabProgressDto> getCodelabsForStudent(@PathVariable Long id) {
+    public List<StudentCodelabProgressDto> getCodelabsForStudent(@PathVariable Long id) {
         return codelabService.getCodelabsForStudent(id);
     }
 
@@ -31,8 +31,9 @@ public class CodelabController {
        return codelabService.saveCodelabProgress(codelabProgressDto, id);
     }
 
+    @PreAuthorize("hasAuthority('VIEW_STUDENT_PROGRESS')")
     @GetMapping(path = "/progress", produces = MediaType.APPLICATION_JSON_VALUE)
-    private List<ProgressOverviewDto> getProgressOverview() {
+    public List<ProgressOverviewDto> getProgressOverview() {
         return codelabService.getProgressOverview();
     }
 
