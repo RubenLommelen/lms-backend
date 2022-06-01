@@ -2,6 +2,8 @@ package com.switchfully.evolveandgo.lmsbackend.coach;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CoachService {
 
@@ -11,7 +13,7 @@ public class CoachService {
         this.coachJpaRepository = coachJpaRepository;
     }
 
-    public Coach findByEmail(String email){
+    public Optional<Coach> findByEmail(String email){
         return coachJpaRepository.findByEmail(email);
     }
 
