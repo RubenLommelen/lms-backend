@@ -66,6 +66,8 @@ public class CodelabService {
     }
 
     public void saveCodelabProgress(List<CodelabProgressDto> codelabProgressDtoList, Long id) {
+        logger.info("Saving codelabs progress for student with id: " + id);
+
         Student student = studentService.findById(id);
 
         for (CodelabProgressDto codelabProgressDto : codelabProgressDtoList) {
@@ -79,6 +81,7 @@ public class CodelabService {
                 studentCodelabProgressJpaRepository.save(new StudentCodelabProgress(codelabProgressDto.getProgress(), codelab, student));
             }
         }
+        logger.info("codelabs progress saved for student with id: " + id);
 
     }
 
