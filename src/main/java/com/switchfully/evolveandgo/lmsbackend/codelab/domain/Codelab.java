@@ -1,9 +1,6 @@
 package com.switchfully.evolveandgo.lmsbackend.codelab.domain;
 
-import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabProgress;
-
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
