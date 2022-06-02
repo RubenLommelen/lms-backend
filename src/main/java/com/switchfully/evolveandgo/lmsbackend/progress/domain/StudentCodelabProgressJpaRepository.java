@@ -15,7 +15,7 @@ public interface StudentCodelabProgressJpaRepository extends JpaRepository<Stude
     StudentCodelabProgress findByCodelabIdAndStudentId(long codelabId, long studentId);
 
     @Query(value = "SELECT fk_student as studentId, count(progress) as numberOfCompletedCodelabs " +
-            "FROM codelab_progress " +
+            "FROM student_codelab_progress " +
             "where progress in ('DONE', 'FEEDBACK_NEEDED') " +
             "group by studentId;", nativeQuery = true)
     List<ProgressOverview> findProgressOverview();

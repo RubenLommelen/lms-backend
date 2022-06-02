@@ -6,7 +6,7 @@ import com.switchfully.evolveandgo.lmsbackend.user.student.domain.Student;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "CODELAB_PROGRESS")
+@Table(name = "STUDENT_CODELAB_PROGRESS")
 public class StudentCodelabProgress {
 
     @Id
