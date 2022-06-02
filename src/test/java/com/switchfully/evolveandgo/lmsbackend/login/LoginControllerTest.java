@@ -1,9 +1,8 @@
 package com.switchfully.evolveandgo.lmsbackend.login;
 
-import com.switchfully.evolveandgo.lmsbackend.infrastructure.User;
 import com.switchfully.evolveandgo.lmsbackend.login.dto.LoginDto;
 import com.switchfully.evolveandgo.lmsbackend.login.dto.TokenDto;
-import com.switchfully.evolveandgo.lmsbackend.login.dto.UserType;
+import com.switchfully.evolveandgo.lmsbackend.login.domain.UserType;
 import com.switchfully.evolveandgo.lmsbackend.login.service.LoginService;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -14,9 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.jdbc.Sql;
-
-import javax.transaction.Transactional;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

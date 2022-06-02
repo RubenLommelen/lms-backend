@@ -1,12 +1,12 @@
 package com.switchfully.evolveandgo.lmsbackend.login;
 
-import com.switchfully.evolveandgo.lmsbackend.coach.domain.Coach;
-import com.switchfully.evolveandgo.lmsbackend.coach.service.CoachService;
-import com.switchfully.evolveandgo.lmsbackend.infrastructure.User;
-import com.switchfully.evolveandgo.lmsbackend.login.dto.UserType;
-import com.switchfully.evolveandgo.lmsbackend.student.domain.StudentJpaRepository;
-import com.switchfully.evolveandgo.lmsbackend.student.exception.UserNotFoundException;
-import com.switchfully.evolveandgo.lmsbackend.student.service.StudentService;
+import com.switchfully.evolveandgo.lmsbackend.user.coach.domain.Coach;
+import com.switchfully.evolveandgo.lmsbackend.user.coach.service.CoachService;
+import com.switchfully.evolveandgo.lmsbackend.user.User;
+import com.switchfully.evolveandgo.lmsbackend.login.domain.UserType;
+import com.switchfully.evolveandgo.lmsbackend.user.student.domain.StudentJpaRepository;
+import com.switchfully.evolveandgo.lmsbackend.user.exception.UserNotFoundException;
+import com.switchfully.evolveandgo.lmsbackend.user.student.service.StudentService;
 import com.switchfully.evolveandgo.lmsbackend.login.dto.LoginDto;
 import com.switchfully.evolveandgo.lmsbackend.login.dto.TokenDto;
 import com.switchfully.evolveandgo.lmsbackend.login.service.LoginService;

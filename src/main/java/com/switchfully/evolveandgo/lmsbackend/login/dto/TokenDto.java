@@ -1,5 +1,7 @@
 package com.switchfully.evolveandgo.lmsbackend.login.dto;
 
+import com.switchfully.evolveandgo.lmsbackend.login.domain.UserType;
+
 public class TokenDto {
     private final String token;
     private final String username;

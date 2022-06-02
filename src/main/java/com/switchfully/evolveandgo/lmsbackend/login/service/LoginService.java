@@ -1,7 +1,6 @@
 package com.switchfully.evolveandgo.lmsbackend.login.service;
 
-import com.switchfully.evolveandgo.lmsbackend.login.LoginController;
-import org.apache.tomcat.websocket.AuthenticationException;
+import com.switchfully.evolveandgo.lmsbackend.login.exception.InvalidCredentialsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;

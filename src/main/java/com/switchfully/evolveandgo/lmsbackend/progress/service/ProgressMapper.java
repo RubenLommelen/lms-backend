@@ -3,7 +3,7 @@ package com.switchfully.evolveandgo.lmsbackend.progress.service;
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabJpaRepository;
 import com.switchfully.evolveandgo.lmsbackend.progress.domain.ProgressOverview;
 import com.switchfully.evolveandgo.lmsbackend.progress.dto.ProgressOverviewDto;
-import com.switchfully.evolveandgo.lmsbackend.student.service.StudentService;
+import com.switchfully.evolveandgo.lmsbackend.user.student.service.StudentService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
