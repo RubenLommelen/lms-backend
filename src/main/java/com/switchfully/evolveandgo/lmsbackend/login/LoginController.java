@@ -1,7 +1,7 @@
 package com.switchfully.evolveandgo.lmsbackend.login;
 
-import com.switchfully.evolveandgo.lmsbackend.coach.Coach;
-import com.switchfully.evolveandgo.lmsbackend.coach.CoachService;
+import com.switchfully.evolveandgo.lmsbackend.coach.domain.Coach;
+import com.switchfully.evolveandgo.lmsbackend.coach.service.CoachService;
 import com.switchfully.evolveandgo.lmsbackend.infrastructure.User;
 import com.switchfully.evolveandgo.lmsbackend.login.dto.UserType;
 import com.switchfully.evolveandgo.lmsbackend.student.domain.StudentJpaRepository;

@@ -1,4 +1,4 @@
-package com.switchfully.evolveandgo.lmsbackend.coach;
+package com.switchfully.evolveandgo.lmsbackend.coach.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

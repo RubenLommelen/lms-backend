@@ -1,4 +1,4 @@
-package com.switchfully.evolveandgo.lmsbackend.coach;
+package com.switchfully.evolveandgo.lmsbackend.coach.domain;
 
 import com.switchfully.evolveandgo.lmsbackend.infrastructure.User;
 
