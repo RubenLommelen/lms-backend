@@ -127,10 +127,9 @@ class ProgressControllerIntegrationTest {
 
         //THEN
         List<StudentCodelabProgressDto> codelabsForStudent = codelabService.getCodelabsForStudent(studentId);
-        Map<Long,StudentCodelabProgressDto> actualProgressList = codelabsForStudent.stream()
+        Map<Long, StudentCodelabProgressDto> actualProgressList = codelabsForStudent.stream()
                 .filter(studentCodelabProgressDto -> studentCodelabProgressDto.getCodelabId().equals(codelab1.getId()) || studentCodelabProgressDto.getCodelabId().equals(codelab2.getId()))
-                .collect(Collectors.toMap(value->value.getCodelabId(),value->value));
-
+                .collect(Collectors.toMap(value -> value.getCodelabId(), value -> value));
 
 
         Assertions.assertThat(actualProgressList.get(1L).getProgress()).isEqualTo(codelabProgressDto1.getProgress());
@@ -189,6 +188,25 @@ class ProgressControllerIntegrationTest {
         CodelabCommentDto codelabCommentDto = new CodelabCommentDto("Codelab 1 is hard", 1L, 1L);
 
         CodelabCommentDto actualCodelabCommentDto =
+                RestAssured.given()
+                        .port(port)
+                        .body(codelabCommentDto)
+                        .contentType(ContentType.JSON)
+                        .when()
+                        .accept(ContentType.JSON)
+                        .post("/students/1/codelabcomments")
+                        .then()
+                        .assertThat()
+                        .statusCode(HttpStatus.CREATED.value())
+                        .extract().as(CodelabCommentDto.class);
+
+        Assertions.assertThat(actualCodelabCommentDto.getCodelabComment()).isEqualTo(codelabCommentDto.getCodelabComment());
+    }
+
+    @Test
+    void givenCodelabCommentDto_whenNoCombinationOfCodelabIdAndStudentIdFound_thenReturnBadRequest() {
+        CodelabCommentDto codelabCommentDto = new CodelabCommentDto("Codelab 1 is easy", 27L, 1L);
+
         RestAssured.given()
                 .port(port)
                 .body(codelabCommentDto)
@@ -198,12 +216,8 @@ class ProgressControllerIntegrationTest {
                 .post("/students/1/codelabcomments")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.CREATED.value())
-                .extract().as(CodelabCommentDto.class);
+                .statusCode(HttpStatus.BAD_REQUEST.value());
 
-        Assertions.assertThat(actualCodelabCommentDto.getCodelabComment()).isEqualTo(codelabCommentDto.getCodelabComment());
+
     }
-
-
-
 }
