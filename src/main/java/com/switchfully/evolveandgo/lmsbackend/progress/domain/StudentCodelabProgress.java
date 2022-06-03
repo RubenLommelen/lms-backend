@@ -26,7 +26,8 @@ public class StudentCodelabProgress {
     @JoinColumn(name = "FK_STUDENT")
     private Student student;
 
-    //add comment table/property
+    @Column(name = "COMMENT")
+    private String comment;
 
     public StudentCodelabProgress(ProgressState progress, Codelab codelab, Student student) {
         this.progress = progress;
@@ -53,7 +54,15 @@ public class StudentCodelabProgress {
         return student;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
     public void setProgress(ProgressState progress) {
         this.progress = progress;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

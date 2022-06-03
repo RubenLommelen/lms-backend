@@ -4,6 +4,7 @@ import com.switchfully.evolveandgo.lmsbackend.codelab.domain.Codelab;
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabJpaRepository;
 import com.switchfully.evolveandgo.lmsbackend.progress.domain.ProgressState;
 import com.switchfully.evolveandgo.lmsbackend.progress.domain.StudentCodelabProgressJpaRepository;
+import com.switchfully.evolveandgo.lmsbackend.progress.dto.CodelabCommentDto;
 import com.switchfully.evolveandgo.lmsbackend.progress.dto.ProgressOverviewDto;
 import com.switchfully.evolveandgo.lmsbackend.progress.service.ProgressMapper;
 import com.switchfully.evolveandgo.lmsbackend.user.student.domain.StudentJpaRepository;
@@ -182,4 +183,23 @@ class ProgressControllerIntegrationTest {
         Assertions.assertThat(actualCodelabs.get(0).getCodelabId()).isEqualTo(eldestCodelabId);
 
     }
+
+    @Test
+    void givenCodelabCommentDto_whenSaved_thenCommentAddedToDataBase() {
+        CodelabCommentDto codelabCommentDto = new CodelabCommentDto("Codelab 1 is hard", 1L, 1L);
+
+        RestAssured.given()
+                .port(port)
+                .body(codelabCommentDto)
+                .contentType(ContentType.JSON)
+                .when()
+                .accept(ContentType.JSON)
+                .post("/students/1/codelabcomments")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.CREATED.value());
+    }
+
+
+
 }

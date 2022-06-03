@@ -1,6 +1,7 @@
 package com.switchfully.evolveandgo.lmsbackend.progress.service;
 
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.*;
+import com.switchfully.evolveandgo.lmsbackend.progress.dto.CodelabCommentDto;
 import com.switchfully.evolveandgo.lmsbackend.progress.dto.SaveStudentCodelabProgressDto;
 import com.switchfully.evolveandgo.lmsbackend.progress.domain.ProgressState;
 import com.switchfully.evolveandgo.lmsbackend.progress.domain.StudentCodelabProgress;
@@ -110,5 +111,10 @@ public class ProgressService {
         return progressOverviewDtoList;
     }
 
+    public void saveCodelabComment(CodelabCommentDto codelabCommentDto) {
+        StudentCodelabProgress studentCodelabProgress = studentCodelabProgressJpaRepository.findByCodelabIdAndStudentId(codelabCommentDto.getCodelabId(), codelabCommentDto.getStudentId());
+        studentCodelabProgress.setComment(codelabCommentDto.getComment());
+        studentCodelabProgressJpaRepository.save(studentCodelabProgress);
+    }
 }
 
