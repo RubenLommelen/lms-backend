@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @CrossOrigin
 public class RegisterController {
@@ -18,7 +20,7 @@ public class RegisterController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "register", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void registerStudent(@RequestBody RegisterStudentDto registerStudentDto) {
+    public void registerStudent(@Valid @RequestBody RegisterStudentDto registerStudentDto) {
         studentService.registerStudent(registerStudentDto);
     }
 }

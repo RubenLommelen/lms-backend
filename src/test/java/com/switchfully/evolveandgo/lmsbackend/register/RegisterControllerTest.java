@@ -83,4 +83,60 @@ class RegisterControllerTest {
                 .hasMessage("Passwords do not match");
 
     }
+
+    @Test
+    void givenRegisterStudentDto_whenDisplayNameEmpty_thenBadRequest() {
+
+        String pass1 = "Ruben123!";
+        String pass2 = "Ruben123!";
+
+        RegisterStudentDto expected = new RegisterStudentDto("", "pizza@hawai.com", pass1, pass2);
+
+        RestAssured
+                .given()
+                .contentType(JSON)
+                .body(expected)
+                .when()
+                .port(port)
+                .post("/register")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+
+//        Throwable thrown = Assertions.catchThrowable(() -> studentService.registerStudent(expected));
+
+        //THEN
+//        Assertions.assertThat(thrown)
+//                .isInstanceOf(PasswordsDoNotMatchException.class)
+//                .hasMessage("Passwords do not match");
+
+    }
+
+    @Test
+    void givenRegisterStudentDto_whenPasswordFormatIncorrect_thenBadRequest() {
+
+        String pass1 = "zzzzzzzz";
+        String pass2 = "zzzzzzzz";
+
+        RegisterStudentDto expected = new RegisterStudentDto("Pizza", "pizza@hawai.com", pass1, pass2);
+
+        RestAssured
+                .given()
+                .contentType(JSON)
+                .body(expected)
+                .when()
+                .port(port)
+                .post("/register")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+
+//        Throwable thrown = Assertions.catchThrowable(() -> studentService.registerStudent(expected));
+
+        //THEN
+//        Assertions.assertThat(thrown)
+//                .isInstanceOf(PasswordsDoNotMatchException.class)
+//                .hasMessage("Passwords do not match");
+
+    }
 }
