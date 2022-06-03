@@ -188,6 +188,7 @@ class ProgressControllerIntegrationTest {
     void givenCodelabCommentDto_whenSaved_thenCommentAddedToDataBase() {
         CodelabCommentDto codelabCommentDto = new CodelabCommentDto("Codelab 1 is hard", 1L, 1L);
 
+        CodelabCommentDto actualCodelabCommentDto =
         RestAssured.given()
                 .port(port)
                 .body(codelabCommentDto)
@@ -197,7 +198,10 @@ class ProgressControllerIntegrationTest {
                 .post("/students/1/codelabcomments")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.CREATED.value());
+                .statusCode(HttpStatus.CREATED.value())
+                .extract().as(CodelabCommentDto.class);
+
+        Assertions.assertThat(actualCodelabCommentDto.getCodelabComment()).isEqualTo(codelabCommentDto.getCodelabComment());
     }
 
 

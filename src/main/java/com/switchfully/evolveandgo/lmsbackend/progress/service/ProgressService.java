@@ -111,10 +111,11 @@ public class ProgressService {
         return progressOverviewDtoList;
     }
 
-    public void saveCodelabComment(CodelabCommentDto codelabCommentDto) {
+    public CodelabCommentDto saveCodelabComment(CodelabCommentDto codelabCommentDto) {
         StudentCodelabProgress studentCodelabProgress = studentCodelabProgressJpaRepository.findByCodelabIdAndStudentId(codelabCommentDto.getCodelabId(), codelabCommentDto.getStudentId());
         studentCodelabProgress.setComment(codelabCommentDto.getCodelabComment());
         studentCodelabProgressJpaRepository.save(studentCodelabProgress);
+        return codelabCommentDto;
     }
 }
 

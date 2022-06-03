@@ -23,12 +23,5 @@ public class CodelabCommentDto {
         return studentId;
     }
 
-    @Override
-    public String toString() {
-        return "CodelabCommentDto{" +
-                "comment='" + codelabComment + '\'' +
-                ", codelabId=" + codelabId +
-                ", studentId=" + studentId +
-                '}';
-    }
+
 }

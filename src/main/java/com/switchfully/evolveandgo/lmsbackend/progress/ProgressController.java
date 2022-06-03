@@ -37,15 +37,15 @@ public class ProgressController {
     @PreAuthorize("hasAuthority('VIEW_STUDENT_PROGRESS')")
     @GetMapping(path = "/progress", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ProgressOverviewDto> getProgressOverview() {
+
         return progressService.getProgressOverview();
     }
 
     @PreAuthorize("hasAuthority('SAVE_CODELAB_PROGRESS')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/students/{id}/codelabcomments", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void saveCodelabsProgess(@PathVariable Long id, @RequestBody CodelabCommentDto codelabCommentDto) {
-        progressService.saveCodelabComment(codelabCommentDto);
-        System.out.println(codelabCommentDto);
+    public CodelabCommentDto saveCodelabsProgess(@PathVariable Long id, @RequestBody CodelabCommentDto codelabCommentDto) {
+        return progressService.saveCodelabComment(codelabCommentDto);
 
     }
 
