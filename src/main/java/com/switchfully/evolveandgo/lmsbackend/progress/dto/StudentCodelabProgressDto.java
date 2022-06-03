@@ -11,15 +11,15 @@ public class StudentCodelabProgressDto {
     private final ProgressState progress;
     private final String codelabName;
     private final Date codelabCreationDate;
-    private final String comment;
+    private final String codelabComment;
 
-    public StudentCodelabProgressDto(Long codelabId, ProgressState progress, String codelabName, Timestamp codelabCreationDate, String comment) {
+    public StudentCodelabProgressDto(Long codelabId, ProgressState progress, String codelabName, Timestamp codelabCreationDate, String codelabComment) {
         this.codelabId = codelabId;
 
         this.progress = progress;
         this.codelabName = codelabName;
         this.codelabCreationDate = codelabCreationDate;
-        this.comment = comment;
+        this.codelabComment = codelabComment;
     }
 
     public Long getCodelabId() {
@@ -39,8 +39,8 @@ public class StudentCodelabProgressDto {
         return codelabCreationDate;
     }
 
-    public String getComment() {
-        return comment;
+    public String getCodelabComment() {
+        return codelabComment;
     }
 
     @Override

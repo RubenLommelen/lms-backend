@@ -1,18 +1,18 @@
 package com.switchfully.evolveandgo.lmsbackend.progress.dto;
 
 public class CodelabCommentDto {
-    private final String comment;
+    private final String codelabComment;
     private final Long codelabId;
     private final Long studentId;
 
-    public CodelabCommentDto(String comment, Long codelabId, Long studentId) {
-        this.comment = comment;
+    public CodelabCommentDto(String codelabComment, Long codelabId, Long studentId) {
+        this.codelabComment = codelabComment;
         this.codelabId = codelabId;
         this.studentId = studentId;
     }
 
-    public String getComment() {
-        return comment;
+    public String getCodelabComment() {
+        return codelabComment;
     }
 
     public Long getCodelabId() {
@@ -26,7 +26,7 @@ public class CodelabCommentDto {
     @Override
     public String toString() {
         return "CodelabCommentDto{" +
-                "comment='" + comment + '\'' +
+                "comment='" + codelabComment + '\'' +
                 ", codelabId=" + codelabId +
                 ", studentId=" + studentId +
                 '}';

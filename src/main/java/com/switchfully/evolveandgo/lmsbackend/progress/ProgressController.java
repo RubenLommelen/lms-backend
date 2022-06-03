@@ -45,6 +45,7 @@ public class ProgressController {
     @PostMapping(path = "/students/{id}/codelabcomments", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void saveCodelabsProgess(@PathVariable Long id, @RequestBody CodelabCommentDto codelabCommentDto) {
         progressService.saveCodelabComment(codelabCommentDto);
+        System.out.println(codelabCommentDto);
 
     }
 
