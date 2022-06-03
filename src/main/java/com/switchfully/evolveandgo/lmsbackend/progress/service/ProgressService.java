@@ -113,7 +113,11 @@ public class ProgressService {
 
     public CodelabCommentDto saveCodelabComment(CodelabCommentDto codelabCommentDto) {
         if (!studentCodelabProgressJpaRepository.existsByCodelabIdAndStudentId(codelabCommentDto.getCodelabId(), codelabCommentDto.getStudentId())) {
-            throw new NoProgressException();
+            Codelab codelab = codelabJpaRepository.findById(codelabCommentDto.getCodelabId()).get();
+            Student student = studentService.findById(codelabCommentDto.getStudentId());
+            StudentCodelabProgress studentCodelabProgress = new StudentCodelabProgress(ProgressState.NOT_STARTED, codelab, student);
+            studentCodelabProgressJpaRepository.save(studentCodelabProgress);
+            return codelabCommentDto;
         }
         StudentCodelabProgress studentCodelabProgress = studentCodelabProgressJpaRepository.findByCodelabIdAndStudentId(codelabCommentDto.getCodelabId(), codelabCommentDto.getStudentId());
         studentCodelabProgress.setComment(codelabCommentDto.getCodelabComment());
