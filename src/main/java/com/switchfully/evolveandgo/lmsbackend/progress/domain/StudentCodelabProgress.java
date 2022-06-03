@@ -26,6 +26,8 @@ public class StudentCodelabProgress {
     @JoinColumn(name = "FK_STUDENT")
     private Student student;
 
+    //add comment table/property
+
     public StudentCodelabProgress(ProgressState progress, Codelab codelab, Student student) {
         this.progress = progress;
         this.codelab = codelab;
