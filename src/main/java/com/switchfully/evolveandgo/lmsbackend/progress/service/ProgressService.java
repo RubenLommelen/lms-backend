@@ -112,6 +112,8 @@ public class ProgressService {
     }
 
     public CodelabCommentDto saveCodelabComment(CodelabCommentDto codelabCommentDto, Long studentId, Long codelabId) {
+        logger.info("Attempting to save comment for student ID " + studentId + " and codelab ID " + codelabId  + ".");
+
         if (!studentCodelabProgressJpaRepository.existsByCodelabIdAndStudentId(codelabId, studentId)) {
             Codelab codelab = codelabJpaRepository.findById(codelabId).get();
             Student student = studentService.findById(studentId);
@@ -119,11 +121,14 @@ public class ProgressService {
             StudentCodelabProgress studentCodelabProgress = new StudentCodelabProgress(ProgressState.NOT_STARTED, codelab, student);
             studentCodelabProgress.setComment(codelabCommentDto.getCodelabComment());
             studentCodelabProgressJpaRepository.save(studentCodelabProgress);
+            logger.info("Comment saved to progress with student ID " + studentId + " and codelab ID " + codelabId  + ".");
             return codelabCommentDto;
         }
         StudentCodelabProgress studentCodelabProgress = studentCodelabProgressJpaRepository.findByCodelabIdAndStudentId(codelabId, studentId);
         studentCodelabProgress.setComment(codelabCommentDto.getCodelabComment());
         studentCodelabProgressJpaRepository.save(studentCodelabProgress);
+        logger.info("Comment saved to progress with student ID " + studentId + " and codelab ID " + codelabId  + ".");
+
         return codelabCommentDto;
     }
 }
