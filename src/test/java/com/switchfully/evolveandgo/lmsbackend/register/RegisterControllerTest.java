@@ -2,6 +2,7 @@ package com.switchfully.evolveandgo.lmsbackend.register;
 
 import com.switchfully.evolveandgo.lmsbackend.register.dto.RegisterStudentDto;
 import com.switchfully.evolveandgo.lmsbackend.register.exception.PasswordsDoNotMatchException;
+import com.switchfully.evolveandgo.lmsbackend.user.exception.StudentEmailAlreadyExistsException;
 import com.switchfully.evolveandgo.lmsbackend.user.student.domain.Student;
 import com.switchfully.evolveandgo.lmsbackend.user.student.domain.StudentJpaRepository;
 import com.switchfully.evolveandgo.lmsbackend.user.student.service.StudentService;
@@ -103,13 +104,6 @@ class RegisterControllerTest {
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value());
 
-//        Throwable thrown = Assertions.catchThrowable(() -> studentService.registerStudent(expected));
-
-        //THEN
-//        Assertions.assertThat(thrown)
-//                .isInstanceOf(PasswordsDoNotMatchException.class)
-//                .hasMessage("Passwords do not match");
-
     }
 
     @Test
@@ -131,12 +125,47 @@ class RegisterControllerTest {
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value());
 
-//        Throwable thrown = Assertions.catchThrowable(() -> studentService.registerStudent(expected));
+
+    }
+
+    @Test
+    void givenRegisterStudentDto_whenRepeatPasswordBlank_thenBadRequest() {
+
+        RegisterStudentDto expected = new RegisterStudentDto("Pizza", "pizza@hawai.com", "Ruben123!", "  ");
+
+        RestAssured
+                .given()
+                .contentType(JSON)
+                .body(expected)
+                .when()
+                .port(port)
+                .post("/register")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+
+    }
+
+    @Test
+    void givenRegisterStudentDto_whenEmailAlreadyExists_ThenThrowException(){
+        RegisterStudentDto expected = new RegisterStudentDto("Spaghetti", "rinaldo@spaghetto.be","Ruben123!", "Ruben123!");
+
+        RestAssured
+                .given()
+                .contentType(JSON)
+                .body(expected)
+                .when()
+                .port(port)
+                .post("/register")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+
+        Throwable thrown = Assertions.catchThrowable(() -> studentService.registerStudent(expected));
 
         //THEN
-//        Assertions.assertThat(thrown)
-//                .isInstanceOf(PasswordsDoNotMatchException.class)
-//                .hasMessage("Passwords do not match");
-
+        Assertions.assertThat(thrown)
+                .isInstanceOf(StudentEmailAlreadyExistsException.class)
+                .hasMessage("Email already exists, for email : " + "rinaldo@spaghetto.be");
     }
 }

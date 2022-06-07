@@ -2,6 +2,7 @@ package com.switchfully.evolveandgo.lmsbackend.user.student.service;
 
 import com.switchfully.evolveandgo.lmsbackend.register.dto.RegisterStudentDto;
 import com.switchfully.evolveandgo.lmsbackend.register.exception.PasswordsDoNotMatchException;
+import com.switchfully.evolveandgo.lmsbackend.user.exception.StudentEmailAlreadyExistsException;
 import com.switchfully.evolveandgo.lmsbackend.user.student.dto.StudentDto;
 import com.switchfully.evolveandgo.lmsbackend.user.exception.UserNotFoundException;
 import com.switchfully.evolveandgo.lmsbackend.user.student.domain.Student;
@@ -37,6 +38,10 @@ public class StudentService {
     public void registerStudent(RegisterStudentDto registerStudentDto) {
         if (!registerStudentDto.getPassword().equals(registerStudentDto.getRepeatPassword())) {
             throw new PasswordsDoNotMatchException();
+        }
+        if (studentJpaRepository.existsByEmail(registerStudentDto.getEmail()))
+        {
+            throw new StudentEmailAlreadyExistsException(registerStudentDto.getEmail());
         }
         studentJpaRepository.save(studentMapper.toStudent(registerStudentDto));
     }
