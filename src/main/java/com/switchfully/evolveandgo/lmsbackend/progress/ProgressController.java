@@ -25,6 +25,7 @@ public class ProgressController {
     @PreAuthorize("hasAuthority('VIEW_CODELAB_PROGRESS')")
     @GetMapping(path = "/students/{id}/codelabs", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<StudentCodelabProgressDto> getCodelabsForStudent(@PathVariable Long id) {
+        System.out.println(progressService.getCodelabsForStudent(id));
         return progressService.getCodelabsForStudent(id);
     }
 

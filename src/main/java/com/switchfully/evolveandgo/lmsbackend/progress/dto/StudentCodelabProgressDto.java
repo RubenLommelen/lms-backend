@@ -13,6 +13,7 @@ public class StudentCodelabProgressDto {
     private final Date codelabCreationDate;
     private final String codelabComment;
     private final String codelabSolutionUrl;
+    private final boolean codelabCompleted;
 
     public StudentCodelabProgressDto(Long codelabId, ProgressState progress, String codelabName, Timestamp codelabCreationDate, String codelabComment, String codelabSolutionUrl) {
         this.codelabId = codelabId;
@@ -22,6 +23,7 @@ public class StudentCodelabProgressDto {
         this.codelabCreationDate = codelabCreationDate;
         this.codelabComment = codelabComment;
         this.codelabSolutionUrl = codelabSolutionUrl;
+        this.codelabCompleted = progress.codelabCompleted();
     }
 
     public Long getCodelabId() {
@@ -49,6 +51,10 @@ public class StudentCodelabProgressDto {
         return codelabSolutionUrl;
     }
 
+    public boolean codelabCompleted() {
+        return codelabCompleted;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,6 +75,9 @@ public class StudentCodelabProgressDto {
                 ", progress=" + progress +
                 ", codelabName='" + codelabName + '\'' +
                 ", codelabCreationDate=" + codelabCreationDate +
+                ", codelabComment='" + codelabComment + '\'' +
+                ", codelabSolutionUrl='" + codelabSolutionUrl + '\'' +
+                ", codelabCompleted=" + codelabCompleted +
                 '}';
     }
 }
