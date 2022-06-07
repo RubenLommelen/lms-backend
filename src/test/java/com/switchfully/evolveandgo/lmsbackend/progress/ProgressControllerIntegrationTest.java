@@ -230,4 +230,53 @@ class ProgressControllerIntegrationTest {
 
         }
     }
+
+    @Nested
+    class CommentAndSolutionUrlTest{
+        @Test
+        void givenCodelabCommentDto_whenSaved_thenCommentAndSolutionUrlAddedToDataBase() {
+            Long studentId = 1L;
+            Long codelabId = 1L;
+            CodelabCommentDto codelabCommentDto = new CodelabCommentDto("Codelab 1 is hard", "https://www.donuts.com/delicious");
+
+            RestAssured.given()
+                    .port(port)
+                    .body(codelabCommentDto)
+                    .contentType(ContentType.JSON)
+                    .when()
+                    .accept(ContentType.JSON)
+                    .post("/students/"+studentId+"/codelabs/"+codelabId+"/comments")
+                    .then()
+                    .assertThat()
+                    .statusCode(HttpStatus.CREATED.value());
+
+            StudentCodelabProgress studentCodelabProgress = studentCodelabProgressJpaRepository.findByCodelabIdAndStudentId(studentId, codelabId);
+            Assertions.assertThat(studentCodelabProgress.getComment()).isEqualTo(codelabCommentDto.getCodelabComment());
+            Assertions.assertThat(studentCodelabProgress.getSolutionUrl()).isEqualTo(codelabCommentDto.getCodelabSolutionUrl());
+        }
+
+        @Test
+        void givenCodelabCommentDto_whenNoCombinationOfCodelabIdAndStudentIdFound_thenAddProgressWithComment() {
+            Long studentId = 1L;
+            Long codelabId = 99999999L;
+            CodelabCommentDto codelabCommentDto = new CodelabCommentDto("Codelab 1 is hard", "https://www.donuts.com/delicious");
+
+            RestAssured.given()
+                    .port(port)
+                    .body(codelabCommentDto)
+                    .contentType(ContentType.JSON)
+                    .when()
+                    .accept(ContentType.JSON)
+                    .post("/students/"+studentId+"/codelabs/"+codelabId+"/comments")
+                    .then()
+                    .assertThat()
+                    .statusCode(HttpStatus.CREATED.value());
+
+            StudentCodelabProgress studentCodelabProgress = studentCodelabProgressJpaRepository.findByCodelabIdAndStudentId(codelabId, studentId);
+            Assertions.assertThat(studentCodelabProgress.getComment()).isEqualTo(codelabCommentDto.getCodelabComment());
+            Assertions.assertThat(studentCodelabProgress.getSolutionUrl()).isEqualTo(codelabCommentDto.getCodelabSolutionUrl());
+
+
+        }
+    }
 }
