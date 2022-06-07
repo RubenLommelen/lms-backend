@@ -3,6 +3,7 @@ package com.switchfully.evolveandgo.lmsbackend.progress;
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.Codelab;
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabJpaRepository;
 import com.switchfully.evolveandgo.lmsbackend.progress.domain.ProgressState;
+import com.switchfully.evolveandgo.lmsbackend.progress.domain.StudentCodelabProgress;
 import com.switchfully.evolveandgo.lmsbackend.progress.domain.StudentCodelabProgressJpaRepository;
 import com.switchfully.evolveandgo.lmsbackend.progress.dto.CodelabCommentDto;
 import com.switchfully.evolveandgo.lmsbackend.progress.dto.ProgressOverviewDto;
@@ -15,6 +16,7 @@ import com.switchfully.evolveandgo.lmsbackend.user.exception.UserNotFoundExcepti
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -163,7 +165,6 @@ class ProgressControllerIntegrationTest {
         Long eldestCodelabId = 99999998L;
         Long mostRecentCodelabId = 99999999L;
 
-
         //WHEN
         List<StudentCodelabProgressDto> actualCodelabs = RestAssured
                 .given()
@@ -183,41 +184,50 @@ class ProgressControllerIntegrationTest {
 
     }
 
-    @Test
-    void givenCodelabCommentDto_whenSaved_thenCommentAddedToDataBase() {
-        CodelabCommentDto codelabCommentDto = new CodelabCommentDto("Codelab 1 is hard", 1L, 1L);
+    @Nested
+    class CommentTest{
+        @Test
+        void givenCodelabCommentDto_whenSaved_thenCommentAddedToDataBase() {
+            Long studentId = 1L;
+            Long codelabId = 1L;
+            CodelabCommentDto codelabCommentDto = new CodelabCommentDto("Codelab 1 is hard", codelabId, studentId);
 
-        CodelabCommentDto actualCodelabCommentDto =
-                RestAssured.given()
-                        .port(port)
-                        .body(codelabCommentDto)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .accept(ContentType.JSON)
-                        .post("/students/1/codelabcomments")
-                        .then()
-                        .assertThat()
-                        .statusCode(HttpStatus.CREATED.value())
-                        .extract().as(CodelabCommentDto.class);
+                    RestAssured.given()
+                            .port(port)
+                            .body(codelabCommentDto)
+                            .contentType(ContentType.JSON)
+                            .when()
+                            .accept(ContentType.JSON)
+                            .post("/students/"+studentId+"/codelabs/"+codelabId+"/comments")
+                            .then()
+                            .assertThat()
+                            .statusCode(HttpStatus.CREATED.value());
 
-        Assertions.assertThat(actualCodelabCommentDto.getCodelabComment()).isEqualTo(codelabCommentDto.getCodelabComment());
-    }
+            StudentCodelabProgress studentCodelabProgress = studentCodelabProgressJpaRepository.findByCodelabIdAndStudentId(studentId, codelabId);
+            Assertions.assertThat(studentCodelabProgress.getComment()).isEqualTo(codelabCommentDto.getCodelabComment());
+            Assertions.assertThat(studentCodelabProgress.getCodelab().getName()).isEqualTo("Variables");
+        }
 
-    @Test
-    void givenCodelabCommentDto_whenNoCombinationOfCodelabIdAndStudentIdFound_thenReturnBadRequest() {
-        CodelabCommentDto codelabCommentDto = new CodelabCommentDto("Codelab 1 is easy", 27L, 1L);
+        @Test
+        void givenCodelabCommentDto_whenNoCombinationOfCodelabIdAndStudentIdFound_thenAddProgressWithComment() {
+            Long studentId = 1L;
+            Long codelabId = 99999999L;
+            CodelabCommentDto codelabCommentDto = new CodelabCommentDto("Codelab 1 is hard", codelabId, studentId);
 
-        RestAssured.given()
-                .port(port)
-                .body(codelabCommentDto)
-                .contentType(ContentType.JSON)
-                .when()
-                .accept(ContentType.JSON)
-                .post("/students/1/codelabcomments")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.BAD_REQUEST.value());
+            RestAssured.given()
+                    .port(port)
+                    .body(codelabCommentDto)
+                    .contentType(ContentType.JSON)
+                    .when()
+                    .accept(ContentType.JSON)
+                    .post("/students/"+studentId+"/codelabs/"+codelabId+"/comments")
+                    .then()
+                    .assertThat()
+                    .statusCode(HttpStatus.CREATED.value());
 
+            StudentCodelabProgress studentCodelabProgress = studentCodelabProgressJpaRepository.findByCodelabIdAndStudentId(codelabId, studentId);
+            Assertions.assertThat(studentCodelabProgress.getComment()).isEqualTo(codelabCommentDto.getCodelabComment());
 
+        }
     }
 }

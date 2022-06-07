@@ -54,5 +54,4 @@ public class Codelab {
         return Objects.hash(id, name);
     }
 
-
 }

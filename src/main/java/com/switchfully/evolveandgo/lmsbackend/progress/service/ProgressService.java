@@ -115,7 +115,9 @@ public class ProgressService {
         if (!studentCodelabProgressJpaRepository.existsByCodelabIdAndStudentId(codelabCommentDto.getCodelabId(), codelabCommentDto.getStudentId())) {
             Codelab codelab = codelabJpaRepository.findById(codelabCommentDto.getCodelabId()).get();
             Student student = studentService.findById(codelabCommentDto.getStudentId());
+
             StudentCodelabProgress studentCodelabProgress = new StudentCodelabProgress(ProgressState.NOT_STARTED, codelab, student);
+            studentCodelabProgress.setComment(codelabCommentDto.getCodelabComment());
             studentCodelabProgressJpaRepository.save(studentCodelabProgress);
             return codelabCommentDto;
         }
