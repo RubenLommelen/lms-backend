@@ -21,7 +21,7 @@ public class LmsBackendApplication {
      * TODO: Change the account used from master admin to admin of a specific client
      */
     @Bean
-    public Keycloak keycloak(@Value("${master.keycloak.username}") String adminUsername, @Value("${master.keycloak.password}") String adminPassword) {
+    public Keycloak keycloak(@Value("temp") String adminUsername, @Value("temp") String adminPassword) {
         return KeycloakBuilder.builder()
                 .serverUrl("https://keycloak.switchfully.com/auth")
                 .grantType(OAuth2Constants.PASSWORD)

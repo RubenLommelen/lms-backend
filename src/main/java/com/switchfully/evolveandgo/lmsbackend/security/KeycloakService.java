@@ -1,5 +1,7 @@
 package com.switchfully.evolveandgo.lmsbackend.security;
 
+import com.google.common.collect.Lists;
+import com.switchfully.evolveandgo.lmsbackend.register.exception.UserAlreadyExistsException;
 import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.ClientResource;
@@ -9,6 +11,7 @@ import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.WebApplicationException;
@@ -25,13 +28,13 @@ public class KeycloakService {
         this.realmResource = keycloak.realm(realmName);
     }
 
-    public void addUser(KeycloakUserDTO keycloakUserDTO) {
+    public void addUser(KeycloakUserDto keycloakUserDTO) {
         String createdUserId = createUser(keycloakUserDTO);
         getUser(createdUserId).resetPassword(createCredentialRepresentation(keycloakUserDTO.password()));
-        addRole(getUser(createdUserId), keycloakUserDTO.role().getLabel());
+        addRole(getUser(createdUserId), keycloakUserDTO.role().name());
     }
 
-    private String createUser(KeycloakUserDTO keycloakUserDTO) {
+    private String createUser(KeycloakUserDto keycloakUserDTO) {
         try {
             return CreatedResponseUtil.getCreatedId(createUser(keycloakUserDTO.userName()));
         } catch (WebApplicationException exception) {

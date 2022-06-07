@@ -2,6 +2,9 @@ package com.switchfully.evolveandgo.lmsbackend.user.student.service;
 
 import com.switchfully.evolveandgo.lmsbackend.register.dto.RegisterStudentDto;
 import com.switchfully.evolveandgo.lmsbackend.register.exception.PasswordsDoNotMatchException;
+import com.switchfully.evolveandgo.lmsbackend.security.KeycloakService;
+import com.switchfully.evolveandgo.lmsbackend.security.KeycloakUserDto;
+import com.switchfully.evolveandgo.lmsbackend.security.Role;
 import com.switchfully.evolveandgo.lmsbackend.user.exception.StudentEmailAlreadyExistsException;
 import com.switchfully.evolveandgo.lmsbackend.user.student.dto.StudentDto;
 import com.switchfully.evolveandgo.lmsbackend.user.exception.UserNotFoundException;
@@ -13,10 +16,12 @@ import org.springframework.stereotype.Service;
 public class StudentService {
     private final StudentJpaRepository studentJpaRepository;
     private final StudentMapper studentMapper;
+    private final KeycloakService keycloakService;
 
-    public StudentService(StudentJpaRepository studentJpaRepository, StudentMapper studentMapper) {
+    public StudentService(StudentJpaRepository studentJpaRepository, StudentMapper studentMapper, KeycloakService keycloakService) {
         this.studentJpaRepository = studentJpaRepository;
         this.studentMapper = studentMapper;
+        this.keycloakService = keycloakService;
     }
 
     public Student findById(Long id){
@@ -44,5 +49,6 @@ public class StudentService {
             throw new StudentEmailAlreadyExistsException(registerStudentDto.getEmail());
         }
         studentJpaRepository.save(studentMapper.toStudent(registerStudentDto));
+        keycloakService.addUser(new KeycloakUserDto(registerStudentDto.getEmail(), registerStudentDto.getPassword(), Role.STUDENT));
     }
 }

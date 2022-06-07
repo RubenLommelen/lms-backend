@@ -38,5 +38,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login")
                 .antMatchers("/register");
     }
-
 }
