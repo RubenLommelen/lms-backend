@@ -18,7 +18,7 @@ public class KeycloakGrantedAuthoritiesConverter implements Converter<Jwt, Colle
         Map<String,Object> clientAccess = (Map<String, Object>) resourceAccess.get("evolveandgo");
         List<String> roles = (List<String>) clientAccess.get("roles");
         return roles.stream()
-//                .filter(role -> Role.)
+                .filter(role -> Role.isRole(role))
                 .map(role -> Role.valueOf(role))
                 .flatMap(role -> role.getFeatures().stream())
                 .map(feature ->  new SimpleGrantedAuthority(feature.name()))
