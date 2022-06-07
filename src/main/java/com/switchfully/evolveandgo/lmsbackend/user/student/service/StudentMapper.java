@@ -12,6 +12,6 @@ public class StudentMapper {
     }
 
     public Student toStudent(RegisterStudentDto registerStudentDto) {
-        return new Student(registerStudentDto.email(), registerStudentDto.displayName(), registerStudentDto.password());
+        return new Student(registerStudentDto.getEmail(), registerStudentDto.getDisplayName(), registerStudentDto.getPassword());
     }
 }

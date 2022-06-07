@@ -35,7 +35,7 @@ public class StudentService {
     }
 
     public void registerStudent(RegisterStudentDto registerStudentDto) {
-        if (!registerStudentDto.password().equals(registerStudentDto.repeatPassword())) {
+        if (!registerStudentDto.getPassword().equals(registerStudentDto.getRepeatPassword())) {
             throw new PasswordsDoNotMatchException();
         }
         studentJpaRepository.save(studentMapper.toStudent(registerStudentDto));

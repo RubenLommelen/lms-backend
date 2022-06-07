@@ -48,12 +48,12 @@ class RegisterControllerTest {
                 .statusCode(HttpStatus.CREATED.value());
 
 
-        Assertions.assertThat(studentJpaRepository.findByEmail(expected.email()).isPresent()).isTrue();
-        Student actual = studentJpaRepository.findByEmail(expected.email()).get();
+        Assertions.assertThat(studentJpaRepository.findByEmail(expected.getEmail()).isPresent()).isTrue();
+        Student actual = studentJpaRepository.findByEmail(expected.getEmail()).get();
 
-        Assertions.assertThat(actual.getDisplayName()).isEqualTo(expected.displayName());
-        Assertions.assertThat(actual.getEmail()).isEqualTo(expected.email());
-        Assertions.assertThat(actual.getPassword()).isEqualTo(expected.password());
+        Assertions.assertThat(actual.getDisplayName()).isEqualTo(expected.getDisplayName());
+        Assertions.assertThat(actual.getEmail()).isEqualTo(expected.getEmail());
+        Assertions.assertThat(actual.getPassword()).isEqualTo(expected.getPassword());
     }
 
     @Test
