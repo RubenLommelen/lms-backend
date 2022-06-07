@@ -29,6 +29,9 @@ public class StudentCodelabProgress {
     @Column(name = "COMMENT")
     private String comment;
 
+    @Column(name = "SOLUTION_URL")
+    private String solutionUrl;
+
     public StudentCodelabProgress(ProgressState progress, Codelab codelab, Student student) {
         this.progress = progress;
         this.codelab = codelab;
@@ -64,5 +67,13 @@ public class StudentCodelabProgress {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public String getSolutionUrl() {
+        return solutionUrl;
+    }
+
+    public void setSolutionUrl(String solutionUrl) {
+        this.solutionUrl = solutionUrl;
     }
 }

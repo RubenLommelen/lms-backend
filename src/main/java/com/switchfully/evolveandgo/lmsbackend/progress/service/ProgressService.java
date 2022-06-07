@@ -120,12 +120,14 @@ public class ProgressService {
 
             StudentCodelabProgress studentCodelabProgress = new StudentCodelabProgress(ProgressState.NOT_STARTED, codelab, student);
             studentCodelabProgress.setComment(codelabCommentDto.getCodelabComment());
+            studentCodelabProgress.setSolutionUrl(codelabCommentDto.getCodelabSolutionUrl());
             studentCodelabProgressJpaRepository.save(studentCodelabProgress);
             logger.info("Comment saved to progress with student ID " + studentId + " and codelab ID " + codelabId  + ".");
             return codelabCommentDto;
         }
         StudentCodelabProgress studentCodelabProgress = studentCodelabProgressJpaRepository.findByCodelabIdAndStudentId(codelabId, studentId);
         studentCodelabProgress.setComment(codelabCommentDto.getCodelabComment());
+        studentCodelabProgress.setSolutionUrl(codelabCommentDto.getCodelabSolutionUrl());
         studentCodelabProgressJpaRepository.save(studentCodelabProgress);
         logger.info("Comment saved to progress with student ID " + studentId + " and codelab ID " + codelabId  + ".");
 

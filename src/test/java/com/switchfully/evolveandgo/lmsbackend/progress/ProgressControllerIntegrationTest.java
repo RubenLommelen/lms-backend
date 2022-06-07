@@ -190,7 +190,7 @@ class ProgressControllerIntegrationTest {
         void givenCodelabCommentDto_whenSaved_thenCommentAddedToDataBase() {
             Long studentId = 1L;
             Long codelabId = 1L;
-            CodelabCommentDto codelabCommentDto = new CodelabCommentDto("Codelab 1 is hard");
+            CodelabCommentDto codelabCommentDto = new CodelabCommentDto("Codelab 1 is hard", "https://www.donuts.com/delicious");
 
                     RestAssured.given()
                             .port(port)
@@ -212,7 +212,7 @@ class ProgressControllerIntegrationTest {
         void givenCodelabCommentDto_whenNoCombinationOfCodelabIdAndStudentIdFound_thenAddProgressWithComment() {
             Long studentId = 1L;
             Long codelabId = 99999999L;
-            CodelabCommentDto codelabCommentDto = new CodelabCommentDto("Codelab 1 is hard");
+            CodelabCommentDto codelabCommentDto = new CodelabCommentDto("Codelab 1 is hard", "https://www.donuts.com/delicious");
 
             RestAssured.given()
                     .port(port)
