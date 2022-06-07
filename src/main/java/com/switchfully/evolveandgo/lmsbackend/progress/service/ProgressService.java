@@ -1,6 +1,7 @@
 package com.switchfully.evolveandgo.lmsbackend.progress.service;
 
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.*;
+import com.switchfully.evolveandgo.lmsbackend.progress.dto.CodelabCommentDto;
 import com.switchfully.evolveandgo.lmsbackend.progress.dto.SaveStudentCodelabProgressDto;
 import com.switchfully.evolveandgo.lmsbackend.progress.domain.ProgressState;
 import com.switchfully.evolveandgo.lmsbackend.progress.domain.StudentCodelabProgress;
@@ -110,5 +111,24 @@ public class ProgressService {
         return progressOverviewDtoList;
     }
 
-}
+    public CodelabCommentDto saveCodelabComment(CodelabCommentDto codelabCommentDto, Long studentId, Long codelabId) {
+        logger.info("Attempting to save comment for student ID " + studentId + " and codelab ID " + codelabId  + ".");
 
+        if (!studentCodelabProgressJpaRepository.existsByCodelabIdAndStudentId(codelabId, studentId)) {
+            Codelab codelab = codelabJpaRepository.findById(codelabId).get();
+            Student student = studentService.findById(studentId);
+
+            StudentCodelabProgress studentCodelabProgress = new StudentCodelabProgress(ProgressState.NOT_STARTED, codelab, student);
+            studentCodelabProgress.setComment(codelabCommentDto.getCodelabComment());
+            studentCodelabProgressJpaRepository.save(studentCodelabProgress);
+            logger.info("Comment saved to progress with student ID " + studentId + " and codelab ID " + codelabId  + ".");
+            return codelabCommentDto;
+        }
+        StudentCodelabProgress studentCodelabProgress = studentCodelabProgressJpaRepository.findByCodelabIdAndStudentId(codelabId, studentId);
+        studentCodelabProgress.setComment(codelabCommentDto.getCodelabComment());
+        studentCodelabProgressJpaRepository.save(studentCodelabProgress);
+        logger.info("Comment saved to progress with student ID " + studentId + " and codelab ID " + codelabId  + ".");
+
+        return codelabCommentDto;
+    }
+}

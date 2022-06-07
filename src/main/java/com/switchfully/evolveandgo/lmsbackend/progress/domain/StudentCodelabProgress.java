@@ -10,8 +10,8 @@ import javax.persistence.*;
 public class StudentCodelabProgress {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "codelab_progress_seq")
-    @SequenceGenerator(name = "codelab_progress_seq", sequenceName = "codelab_progress_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_codelab_progress_seq")
+    @SequenceGenerator(name = "student_codelab_progress_seq", sequenceName = "student_codelab_progress_seq", allocationSize = 1)
     private Long id;
 
     @Enumerated(EnumType.STRING)
@@ -25,6 +25,9 @@ public class StudentCodelabProgress {
     @ManyToOne
     @JoinColumn(name = "FK_STUDENT")
     private Student student;
+
+    @Column(name = "COMMENT")
+    private String comment;
 
     public StudentCodelabProgress(ProgressState progress, Codelab codelab, Student student) {
         this.progress = progress;
@@ -51,7 +54,15 @@ public class StudentCodelabProgress {
         return student;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
     public void setProgress(ProgressState progress) {
         this.progress = progress;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }
