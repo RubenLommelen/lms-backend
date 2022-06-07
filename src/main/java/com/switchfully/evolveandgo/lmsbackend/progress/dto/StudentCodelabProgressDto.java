@@ -15,7 +15,7 @@ public class StudentCodelabProgressDto {
     private final String codelabSolutionUrl;
     private final boolean codelabCompleted;
 
-    public StudentCodelabProgressDto(Long codelabId, ProgressState progress, String codelabName, Timestamp codelabCreationDate, String codelabComment, String codelabSolutionUrl) {
+    public StudentCodelabProgressDto(Long codelabId, ProgressState progress, String codelabName, Timestamp codelabCreationDate, String codelabComment, String codelabSolutionUrl, boolean codelabCompleted) {
         this.codelabId = codelabId;
 
         this.progress = progress;
@@ -23,7 +23,7 @@ public class StudentCodelabProgressDto {
         this.codelabCreationDate = codelabCreationDate;
         this.codelabComment = codelabComment;
         this.codelabSolutionUrl = codelabSolutionUrl;
-        this.codelabCompleted = progress.codelabCompleted();
+        this.codelabCompleted = codelabCompleted;
     }
 
     public Long getCodelabId() {
@@ -51,7 +51,7 @@ public class StudentCodelabProgressDto {
         return codelabSolutionUrl;
     }
 
-    public boolean codelabCompleted() {
+    public boolean isCodelabCompleted() {
         return codelabCompleted;
     }
 

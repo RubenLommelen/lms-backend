@@ -38,7 +38,6 @@ public class ProgressController {
     @PreAuthorize("hasAuthority('VIEW_STUDENT_PROGRESS')")
     @GetMapping(path = "/progress", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ProgressOverviewDto> getProgressOverview() {
-
         return progressService.getProgressOverview();
     }
 
