@@ -111,17 +111,17 @@ public class ProgressService {
         return progressOverviewDtoList;
     }
 
-    public CodelabCommentDto saveCodelabComment(CodelabCommentDto codelabCommentDto) {
-        if (!studentCodelabProgressJpaRepository.existsByCodelabIdAndStudentId(codelabCommentDto.getCodelabId(), codelabCommentDto.getStudentId())) {
-            Codelab codelab = codelabJpaRepository.findById(codelabCommentDto.getCodelabId()).get();
-            Student student = studentService.findById(codelabCommentDto.getStudentId());
+    public CodelabCommentDto saveCodelabComment(CodelabCommentDto codelabCommentDto, Long studentId, Long codelabId) {
+        if (!studentCodelabProgressJpaRepository.existsByCodelabIdAndStudentId(codelabId, studentId)) {
+            Codelab codelab = codelabJpaRepository.findById(codelabId).get();
+            Student student = studentService.findById(studentId);
 
             StudentCodelabProgress studentCodelabProgress = new StudentCodelabProgress(ProgressState.NOT_STARTED, codelab, student);
             studentCodelabProgress.setComment(codelabCommentDto.getCodelabComment());
             studentCodelabProgressJpaRepository.save(studentCodelabProgress);
             return codelabCommentDto;
         }
-        StudentCodelabProgress studentCodelabProgress = studentCodelabProgressJpaRepository.findByCodelabIdAndStudentId(codelabCommentDto.getCodelabId(), codelabCommentDto.getStudentId());
+        StudentCodelabProgress studentCodelabProgress = studentCodelabProgressJpaRepository.findByCodelabIdAndStudentId(codelabId, studentId);
         studentCodelabProgress.setComment(codelabCommentDto.getCodelabComment());
         studentCodelabProgressJpaRepository.save(studentCodelabProgress);
         return codelabCommentDto;
