@@ -22,3 +22,6 @@ values (99999998, 'Cristiano', current_date - 2);
 
 INSERT INTO codelab
 values (99999999, 'Benzema', current_timestamp + 1 );
+
+INSERT INTO student_codelab_progress
+values (999999999, 99999999, 'NOT_STARTED', 1, '', '');

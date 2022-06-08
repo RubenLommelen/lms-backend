@@ -8,6 +8,7 @@ import com.switchfully.evolveandgo.lmsbackend.progress.domain.StudentCodelabProg
 import com.switchfully.evolveandgo.lmsbackend.progress.domain.StudentCodelabProgressJpaRepository;
 import com.switchfully.evolveandgo.lmsbackend.progress.dto.ProgressOverviewDto;
 import com.switchfully.evolveandgo.lmsbackend.progress.dto.StudentCodelabProgressDto;
+import com.switchfully.evolveandgo.lmsbackend.progress.exception.InvalidProgressException;
 import com.switchfully.evolveandgo.lmsbackend.user.student.domain.Student;
 import com.switchfully.evolveandgo.lmsbackend.user.student.domain.StudentJpaRepository;
 import com.switchfully.evolveandgo.lmsbackend.user.student.service.StudentService;
@@ -112,7 +113,7 @@ public class ProgressService {
     }
 
     public CodelabCommentDto saveCodelabComment(CodelabCommentDto codelabCommentDto, Long studentId, Long codelabId) {
-        logger.info("Attempting to save comment and/or solution url for student ID " + studentId + " and codelab ID " + codelabId  + ".");
+        logger.info("Attempting to save comment and/or solution url for student ID " + studentId + " and codelab ID " + codelabId + ".");
 
         if (!studentCodelabProgressJpaRepository.existsByCodelabIdAndStudentId(codelabId, studentId)) {
             Codelab codelab = codelabJpaRepository.findById(codelabId).get();
@@ -120,17 +121,24 @@ public class ProgressService {
 
             StudentCodelabProgress studentCodelabProgress = new StudentCodelabProgress(ProgressState.NOT_STARTED, codelab, student);
             studentCodelabProgress.setComment(codelabCommentDto.getCodelabComment());
-            studentCodelabProgress.setSolutionUrl(codelabCommentDto.getCodelabSolutionUrl());
             studentCodelabProgressJpaRepository.save(studentCodelabProgress);
-            logger.info("Comment and/or solution url saved to progress with student ID " + studentId + " and codelab ID " + codelabId  + ".");
+            logger.info("Comment and/or solution url saved to progress with student ID " + studentId + " and codelab ID " + codelabId + ".");
             return codelabCommentDto;
         }
         StudentCodelabProgress studentCodelabProgress = studentCodelabProgressJpaRepository.findByCodelabIdAndStudentId(codelabId, studentId);
         studentCodelabProgress.setComment(codelabCommentDto.getCodelabComment());
+        if (isSolutionForIncompleteCodelab(codelabCommentDto, studentCodelabProgress)) {
+            logger.error(new InvalidProgressException().getMessage());
+            throw new InvalidProgressException();
+        }
         studentCodelabProgress.setSolutionUrl(codelabCommentDto.getCodelabSolutionUrl());
         studentCodelabProgressJpaRepository.save(studentCodelabProgress);
-        logger.info("Comment and/or solution url saved to progress with student ID " + studentId + " and codelab ID " + codelabId  + ".");
+        logger.info("Comment and/or solution url saved to progress with student ID " + studentId + " and codelab ID " + codelabId + ".");
 
         return codelabCommentDto;
+    }
+
+    private boolean isSolutionForIncompleteCodelab(CodelabCommentDto codelabCommentDto, StudentCodelabProgress studentCodelabProgress) {
+        return !studentCodelabProgress.getProgress().codelabCompleted() && !(codelabCommentDto.getCodelabSolutionUrl() == null) ;
     }
 }
