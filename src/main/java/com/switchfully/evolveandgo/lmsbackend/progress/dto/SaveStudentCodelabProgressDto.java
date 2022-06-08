@@ -8,7 +8,7 @@ public class SaveStudentCodelabProgressDto {
     private final Long codelabId;
     private final String codelabName;
 
-    public SaveStudentCodelabProgressDto(Long studentId, ProgressState progress, Long codelabId, String codelabName) {
+    public SaveStudentCodelabProgressDto(Long studentId, ProgressState progress, Long codelabId, String codelabName ) {
         this.studentId = studentId;
         this.progress = progress;
         this.codelabId = codelabId;

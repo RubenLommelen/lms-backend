@@ -1,22 +1,19 @@
 package com.switchfully.evolveandgo.lmsbackend.progress.dto;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 public class CodelabCommentDto {
     private final String codelabComment;
+    private final String codelabSolutionUrl;
 
-
-
-    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public CodelabCommentDto(String codelabComment) {
+    public CodelabCommentDto(String codelabComment, String codelabSolutionUrl) {
         this.codelabComment = codelabComment;
-
-
+        this.codelabSolutionUrl = codelabSolutionUrl;
     }
 
     public String getCodelabComment() {
         return codelabComment;
     }
 
-
+    public String getCodelabSolutionUrl() {
+        return codelabSolutionUrl;
+    }
 }

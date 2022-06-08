@@ -7,6 +7,7 @@ import com.switchfully.evolveandgo.lmsbackend.progress.domain.StudentCodelabProg
 import com.switchfully.evolveandgo.lmsbackend.progress.domain.StudentCodelabProgressJpaRepository;
 import com.switchfully.evolveandgo.lmsbackend.progress.dto.CodelabCommentDto;
 import com.switchfully.evolveandgo.lmsbackend.progress.dto.ProgressOverviewDto;
+import com.switchfully.evolveandgo.lmsbackend.progress.exception.InvalidProgressException;
 import com.switchfully.evolveandgo.lmsbackend.progress.service.ProgressMapper;
 import com.switchfully.evolveandgo.lmsbackend.user.student.domain.StudentJpaRepository;
 import com.switchfully.evolveandgo.lmsbackend.progress.dto.SaveStudentCodelabProgressDto;
@@ -40,7 +41,7 @@ class ProgressControllerIntegrationTest {
     private int port;
 
     @Autowired
-    private ProgressService codelabService;
+    private ProgressService progressService;
     @Autowired
     private CodelabJpaRepository codelabJpaRepository;
 
@@ -56,7 +57,7 @@ class ProgressControllerIntegrationTest {
     @Test
     void whenGetAllCodelabsForStudentId_thenCodelabsReturns() {
         //GIVEN
-        List<StudentCodelabProgressDto> expectedCodelabs = codelabService.getCodelabsForStudent(1L);
+        List<StudentCodelabProgressDto> expectedCodelabs = progressService.getCodelabsForStudent(1L);
         Long studentId = 1L;
 
 
@@ -92,7 +93,7 @@ class ProgressControllerIntegrationTest {
                 .assertThat()
                 .statusCode(HttpStatus.NOT_FOUND.value());
 
-        Throwable thrown = Assertions.catchThrowable(() -> codelabService.getCodelabsForStudent(studentId));
+        Throwable thrown = Assertions.catchThrowable(() -> progressService.getCodelabsForStudent(studentId));
 
         //THEN
         Assertions.assertThat(thrown)
@@ -128,7 +129,7 @@ class ProgressControllerIntegrationTest {
                 .statusCode(HttpStatus.OK.value());
 
         //THEN
-        List<StudentCodelabProgressDto> codelabsForStudent = codelabService.getCodelabsForStudent(studentId);
+        List<StudentCodelabProgressDto> codelabsForStudent = progressService.getCodelabsForStudent(studentId);
         Map<Long, StudentCodelabProgressDto> actualProgressList = codelabsForStudent.stream()
                 .filter(studentCodelabProgressDto -> studentCodelabProgressDto.getCodelabId().equals(codelab1.getId()) || studentCodelabProgressDto.getCodelabId().equals(codelab2.getId()))
                 .collect(Collectors.toMap(value -> value.getCodelabId(), value -> value));
@@ -190,7 +191,7 @@ class ProgressControllerIntegrationTest {
         void givenCodelabCommentDto_whenSaved_thenCommentAddedToDataBase() {
             Long studentId = 1L;
             Long codelabId = 1L;
-            CodelabCommentDto codelabCommentDto = new CodelabCommentDto("Codelab 1 is hard");
+            CodelabCommentDto codelabCommentDto = new CodelabCommentDto("Codelab 1 is hard", "https://www.donuts.com/delicious");
 
                     RestAssured.given()
                             .port(port)
@@ -212,7 +213,7 @@ class ProgressControllerIntegrationTest {
         void givenCodelabCommentDto_whenNoCombinationOfCodelabIdAndStudentIdFound_thenAddProgressWithComment() {
             Long studentId = 1L;
             Long codelabId = 99999999L;
-            CodelabCommentDto codelabCommentDto = new CodelabCommentDto("Codelab 1 is hard");
+            CodelabCommentDto codelabCommentDto = new CodelabCommentDto("Codelab 1 is hard", null);
 
             RestAssured.given()
                     .port(port)
@@ -229,5 +230,103 @@ class ProgressControllerIntegrationTest {
             Assertions.assertThat(studentCodelabProgress.getComment()).isEqualTo(codelabCommentDto.getCodelabComment());
 
         }
+    }
+
+    @Nested
+    class CommentAndSolutionUrlTest{
+        @Test
+        void givenCodelabCommentDto_whenSaved_thenCommentAndSolutionUrlAddedToDataBase() {
+            Long studentId = 1L;
+            Long codelabId = 1L;
+            CodelabCommentDto codelabCommentDto = new CodelabCommentDto("Codelab 1 is hard", "https://www.donuts.com/delicious");
+
+            RestAssured.given()
+                    .port(port)
+                    .body(codelabCommentDto)
+                    .contentType(ContentType.JSON)
+                    .when()
+                    .accept(ContentType.JSON)
+                    .post("/students/"+studentId+"/codelabs/"+codelabId+"/comments")
+                    .then()
+                    .assertThat()
+                    .statusCode(HttpStatus.CREATED.value());
+
+            StudentCodelabProgress studentCodelabProgress = studentCodelabProgressJpaRepository.findByCodelabIdAndStudentId(studentId, codelabId);
+            Assertions.assertThat(studentCodelabProgress.getComment()).isEqualTo(codelabCommentDto.getCodelabComment());
+            Assertions.assertThat(studentCodelabProgress.getSolutionUrl()).isEqualTo(codelabCommentDto.getCodelabSolutionUrl());
+        }
+
+        @Test
+        void givenCodelabCommentDto_whenNoCombinationOfCodelabIdAndStudentIdFound_thenAddProgressWithComment() {
+            Long studentId = 1L;
+            Long codelabId = 99999999L;
+            CodelabCommentDto codelabCommentDto = new CodelabCommentDto("Codelab 1 is hard", null);
+
+            RestAssured.given()
+                    .port(port)
+                    .body(codelabCommentDto)
+                    .contentType(ContentType.JSON)
+                    .when()
+                    .accept(ContentType.JSON)
+                    .post("/students/"+studentId+"/codelabs/"+codelabId+"/comments")
+                    .then()
+                    .assertThat()
+                    .statusCode(HttpStatus.CREATED.value());
+
+            StudentCodelabProgress studentCodelabProgress = studentCodelabProgressJpaRepository.findByCodelabIdAndStudentId(codelabId, studentId);
+            Assertions.assertThat(studentCodelabProgress.getComment()).isEqualTo(codelabCommentDto.getCodelabComment());
+            Assertions.assertThat(studentCodelabProgress.getSolutionUrl()).isEqualTo(codelabCommentDto.getCodelabSolutionUrl());
+
+
+        }
+
+        @Test
+        void givenNotCompletedCodelab_WhenSaveSolution_ThenErrorIsThrown() {
+            Long studentId = 1L;
+            Long codelabId = 99999999L;
+            CodelabCommentDto codelabCommentDto = new CodelabCommentDto("Codelab 1 is hard", "https://www.donuts.com/delicious");
+
+            RestAssured.given()
+                    .port(port)
+                    .body(codelabCommentDto)
+                    .contentType(ContentType.JSON)
+                    .when()
+                    .accept(ContentType.JSON)
+                    .post("/students/"+studentId+"/codelabs/"+codelabId+"/comments")
+                    .then()
+                    .assertThat()
+                    .statusCode(HttpStatus.BAD_REQUEST.value());
+
+            Throwable thrown = Assertions.catchThrowable(() -> progressService.saveCodelabComment(codelabCommentDto,studentId,codelabId));
+
+            //THEN
+            Assertions.assertThat(thrown)
+                    .isInstanceOf(InvalidProgressException.class)
+                    .hasMessage("You can only add a solution when codelab is completed");
+        }@Test
+        void givenNoCodelabProgress_WhenSaveSolution_ThenSolutionIsNotSaved() {
+            Long studentId = 1L;
+            Long codelabId = 99999998L;
+            CodelabCommentDto codelabCommentDto = new CodelabCommentDto("Codelab 1 is hard", "https://www.donuts.com/delicious");
+
+            RestAssured.given()
+                    .port(port)
+                    .body(codelabCommentDto)
+                    .contentType(ContentType.JSON)
+                    .when()
+                    .accept(ContentType.JSON)
+                    .post("/students/"+studentId+"/codelabs/"+codelabId+"/comments")
+                    .then()
+                    .assertThat()
+                    .statusCode(HttpStatus.CREATED.value());
+
+            StudentCodelabProgress actualProgress = studentCodelabProgressJpaRepository.findByCodelabIdAndStudentId(codelabId, studentId);
+
+            Assertions.assertThat(actualProgress.getSolutionUrl()).isNull();
+
+
+        }
+
+
     }
 }

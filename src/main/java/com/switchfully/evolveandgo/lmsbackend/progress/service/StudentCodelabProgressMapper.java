@@ -16,8 +16,9 @@ public class StudentCodelabProgressMapper {
                 studentCodelabProgress.getProgress(),
                 studentCodelabProgress.getCodelab().getName(),
                 studentCodelabProgress.getCodelab().getCreationDate(),
-                studentCodelabProgress.getComment()
-                );
+                studentCodelabProgress.getComment(),
+                studentCodelabProgress.getSolutionUrl(),
+                studentCodelabProgress.getProgress().codelabCompleted());
     }
 
     public List<StudentCodelabProgressDto> toDtoList(List<StudentCodelabProgress> studentCodelabProgressList) {
