@@ -23,4 +23,12 @@ public enum Role {
     public String getLabel() {
         return label;
     }
+
+    public static boolean isRole(String role) {
+        return switch (role) {
+            case "COACH" -> true;
+            case "STUDENT" -> true;
+            default -> false;
+        };
+    }
 }
