@@ -34,6 +34,7 @@ class RegisterControllerTest {
 
     @Test
     void givenRegisterStudentDto_whenRegister_thenNewStudentCreated() {
+        // Every time after running this test remove user in keycloak
 
         RegisterStudentDto expected = new RegisterStudentDto("Pizza", "pizza@hawai.com", "Ruben123!", "Ruben123!");
 
