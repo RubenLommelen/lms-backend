@@ -1,9 +1,6 @@
 package com.switchfully.evolveandgo.lmsbackend.progress;
 
-import com.switchfully.evolveandgo.lmsbackend.progress.dto.CodelabCommentDto;
-import com.switchfully.evolveandgo.lmsbackend.progress.dto.SaveStudentCodelabProgressDto;
-import com.switchfully.evolveandgo.lmsbackend.progress.dto.ProgressOverviewDto;
-import com.switchfully.evolveandgo.lmsbackend.progress.dto.StudentCodelabProgressDto;
+import com.switchfully.evolveandgo.lmsbackend.progress.dto.*;
 import com.switchfully.evolveandgo.lmsbackend.progress.service.ProgressService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -46,6 +43,15 @@ public class ProgressController {
     @PostMapping(path = "/students/{studentId}/codelabs/{codelabId}/comments", consumes = MediaType.APPLICATION_JSON_VALUE)
     public CodelabCommentDto saveCodelabsProgess(@PathVariable("studentId") Long studentId, @PathVariable("codelabId") Long codelabId, @RequestBody CodelabCommentDto codelabCommentDto) {
         return progressService.saveCodelabComment(codelabCommentDto, studentId, codelabId);
+    }
+
+    @PreAuthorize("hasAuthority('VIEW_CODELAB_PROGRESS')")
+    @GetMapping(path = "/codelabs/{codelabId}/solutions", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<CodelabSolutionDto> getCodelabSolutions(@PathVariable Long codelabId) {
+        return List.of(
+                new CodelabSolutionDto("Baker", "https://github.com/BakouBakou/java-feb-2022/blob/08d9080acb8ad758a3ee1d473895858a7f8f8ad9/Jenkinsfile"),
+                new CodelabSolutionDto("Alperen", "https://github.com/Alperen/java-feb-2022/blob/08d9080acb8ad758a3ee1d473895858a7f8f8ad9/Jenkinsfile")
+        );
     }
 
 }

@@ -25,3 +25,6 @@ values (99999999, 'Benzema', current_timestamp + 1 );
 
 INSERT INTO student_codelab_progress
 values (999999999, 99999999, 'NOT_STARTED', 1, '', '');
+
+INSERT INTO student_codelab_progress
+values (888888888, 1, 'NOT_STARTED', 1, '', 'https://github.com/BakouBakou/java-feb-2022/blob/08d9080acb8ad758a3ee1d473895858a7f8f8ad9/Jenkinsfile');

@@ -5,13 +5,10 @@ import com.switchfully.evolveandgo.lmsbackend.codelab.domain.CodelabJpaRepositor
 import com.switchfully.evolveandgo.lmsbackend.progress.domain.ProgressState;
 import com.switchfully.evolveandgo.lmsbackend.progress.domain.StudentCodelabProgress;
 import com.switchfully.evolveandgo.lmsbackend.progress.domain.StudentCodelabProgressJpaRepository;
-import com.switchfully.evolveandgo.lmsbackend.progress.dto.CodelabCommentDto;
-import com.switchfully.evolveandgo.lmsbackend.progress.dto.ProgressOverviewDto;
+import com.switchfully.evolveandgo.lmsbackend.progress.dto.*;
 import com.switchfully.evolveandgo.lmsbackend.progress.exception.InvalidProgressException;
 import com.switchfully.evolveandgo.lmsbackend.progress.service.ProgressMapper;
 import com.switchfully.evolveandgo.lmsbackend.user.student.domain.StudentJpaRepository;
-import com.switchfully.evolveandgo.lmsbackend.progress.dto.SaveStudentCodelabProgressDto;
-import com.switchfully.evolveandgo.lmsbackend.progress.dto.StudentCodelabProgressDto;
 import com.switchfully.evolveandgo.lmsbackend.progress.service.ProgressService;
 import com.switchfully.evolveandgo.lmsbackend.user.exception.UserNotFoundException;
 import io.restassured.RestAssured;
@@ -303,7 +300,9 @@ class ProgressControllerIntegrationTest {
             Assertions.assertThat(thrown)
                     .isInstanceOf(InvalidProgressException.class)
                     .hasMessage("You can only add a solution when codelab is completed");
-        }@Test
+        }
+
+        @Test
         void givenNoCodelabProgress_WhenSaveSolution_ThenSolutionIsNotSaved() {
             Long studentId = 1L;
             Long codelabId = 99999998L;
@@ -323,10 +322,28 @@ class ProgressControllerIntegrationTest {
             StudentCodelabProgress actualProgress = studentCodelabProgressJpaRepository.findByCodelabIdAndStudentId(codelabId, studentId);
 
             Assertions.assertThat(actualProgress.getSolutionUrl()).isNull();
-
-
         }
 
+        @Test
+        void givenCodelabId_whenGetSolutions_thenSolutionUrlAndAuthorReturned() {
+            //GIVEN
+            int codelabId = 1;
+            CodelabSolutionDto expected = new CodelabSolutionDto("Baker", "https://github.com/BakouBakou/java-feb-2022/blob/08d9080acb8ad758a3ee1d473895858a7f8f8ad9/Jenkinsfile");
 
+            //WHEN
+            List<CodelabSolutionDto> actual = RestAssured
+                    .given()
+                    .contentType(JSON)
+                    .when()
+                    .port(port)
+                    .get("/codelabs/" + codelabId + "/solutions")
+                    .then()
+                    .assertThat()
+                    .statusCode(HttpStatus.OK.value())
+                    .extract().body().jsonPath().getList(".", CodelabSolutionDto.class);
+
+            //THEN
+            Assertions.assertThat(actual).contains(expected);
+        }
     }
 }
