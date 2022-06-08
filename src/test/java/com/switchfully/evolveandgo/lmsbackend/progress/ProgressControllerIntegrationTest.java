@@ -8,6 +8,7 @@ import com.switchfully.evolveandgo.lmsbackend.progress.domain.StudentCodelabProg
 import com.switchfully.evolveandgo.lmsbackend.progress.dto.*;
 import com.switchfully.evolveandgo.lmsbackend.progress.exception.InvalidProgressException;
 import com.switchfully.evolveandgo.lmsbackend.progress.service.ProgressMapper;
+import com.switchfully.evolveandgo.lmsbackend.user.student.domain.Student;
 import com.switchfully.evolveandgo.lmsbackend.user.student.domain.StudentJpaRepository;
 import com.switchfully.evolveandgo.lmsbackend.progress.service.ProgressService;
 import com.switchfully.evolveandgo.lmsbackend.user.exception.UserNotFoundException;
@@ -328,7 +329,8 @@ class ProgressControllerIntegrationTest {
         void givenCodelabId_whenGetSolutions_thenSolutionUrlAndAuthorReturned() {
             //GIVEN
             int codelabId = 1;
-            CodelabSolutionDto expected = new CodelabSolutionDto("Baker", "https://github.com/BakouBakou/java-feb-2022/blob/08d9080acb8ad758a3ee1d473895858a7f8f8ad9/Jenkinsfile");
+            Student student = studentJpaRepository.findById(1L).get();
+            CodelabSolutionDto expected = new CodelabSolutionDto(student.getDisplayName(), "https://github.com/BakouBakou/java-feb-2022/blob/08d9080acb8ad758a3ee1d473895858a7f8f8ad9/Jenkinsfile");
 
             //WHEN
             List<CodelabSolutionDto> actual = RestAssured

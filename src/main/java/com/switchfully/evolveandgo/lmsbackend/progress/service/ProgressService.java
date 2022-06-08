@@ -1,13 +1,10 @@
 package com.switchfully.evolveandgo.lmsbackend.progress.service;
 
 import com.switchfully.evolveandgo.lmsbackend.codelab.domain.*;
-import com.switchfully.evolveandgo.lmsbackend.progress.dto.CodelabCommentDto;
-import com.switchfully.evolveandgo.lmsbackend.progress.dto.SaveStudentCodelabProgressDto;
+import com.switchfully.evolveandgo.lmsbackend.progress.dto.*;
 import com.switchfully.evolveandgo.lmsbackend.progress.domain.ProgressState;
 import com.switchfully.evolveandgo.lmsbackend.progress.domain.StudentCodelabProgress;
 import com.switchfully.evolveandgo.lmsbackend.progress.domain.StudentCodelabProgressJpaRepository;
-import com.switchfully.evolveandgo.lmsbackend.progress.dto.ProgressOverviewDto;
-import com.switchfully.evolveandgo.lmsbackend.progress.dto.StudentCodelabProgressDto;
 import com.switchfully.evolveandgo.lmsbackend.progress.exception.InvalidProgressException;
 import com.switchfully.evolveandgo.lmsbackend.user.student.domain.Student;
 import com.switchfully.evolveandgo.lmsbackend.user.student.domain.StudentJpaRepository;
@@ -140,5 +137,19 @@ public class ProgressService {
 
     private boolean isSolutionForIncompleteCodelab(CodelabCommentDto codelabCommentDto, StudentCodelabProgress studentCodelabProgress) {
         return !studentCodelabProgress.getProgress().codelabCompleted() && !(codelabCommentDto.getCodelabSolutionUrl() == null) ;
+    }
+
+    public List<CodelabSolutionDto> getCodelabSolutions(Long codelabId) {
+        List<StudentCodelabProgress> codelabsWithSolutions = studentCodelabProgressJpaRepository.findByCodelabId(codelabId).stream()
+                .filter(progress -> isNotNullEmptyBlank(progress))
+                .toList();
+
+        List<CodelabSolutionDto> codelabSolutionDtos = studentCodelabProgressMapper.toSolutionDtoList(codelabsWithSolutions);
+        System.out.println(codelabSolutionDtos);
+        return codelabSolutionDtos;
+    }
+
+    private boolean isNotNullEmptyBlank(StudentCodelabProgress progress) {
+        return !(progress.getSolutionUrl() == null || progress.getSolutionUrl().isEmpty() || progress.getSolutionUrl().isBlank());
     }
 }

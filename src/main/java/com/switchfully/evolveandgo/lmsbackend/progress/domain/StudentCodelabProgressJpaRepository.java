@@ -13,6 +13,7 @@ public interface StudentCodelabProgressJpaRepository extends JpaRepository<Stude
 
     boolean existsByCodelabIdAndStudentId(long codelabId, long studentId);
     StudentCodelabProgress findByCodelabIdAndStudentId(long codelabId, long studentId);
+    List<StudentCodelabProgress> findByCodelabId(long codelabId);
 
     @Query(value = "SELECT fk_student as studentId, count(progress) as numberOfCompletedCodelabs " +
             "FROM student_codelab_progress " +

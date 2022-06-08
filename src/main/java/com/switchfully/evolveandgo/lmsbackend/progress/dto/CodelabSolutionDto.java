@@ -31,4 +31,12 @@ public class CodelabSolutionDto {
     public int hashCode() {
         return Objects.hash(studentDisplayName, solutionUrl);
     }
+
+    @Override
+    public String toString() {
+        return "CodelabSolutionDto{" +
+                "studentDisplayName='" + studentDisplayName + '\'' +
+                ", solutionUrl='" + solutionUrl + '\'' +
+                '}';
+    }
 }

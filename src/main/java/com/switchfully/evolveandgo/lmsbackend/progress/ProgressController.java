@@ -48,10 +48,8 @@ public class ProgressController {
     @PreAuthorize("hasAuthority('VIEW_CODELAB_PROGRESS')")
     @GetMapping(path = "/codelabs/{codelabId}/solutions", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<CodelabSolutionDto> getCodelabSolutions(@PathVariable Long codelabId) {
-        return List.of(
-                new CodelabSolutionDto("Baker", "https://github.com/BakouBakou/java-feb-2022/blob/08d9080acb8ad758a3ee1d473895858a7f8f8ad9/Jenkinsfile"),
-                new CodelabSolutionDto("Alperen", "https://github.com/Alperen/java-feb-2022/blob/08d9080acb8ad758a3ee1d473895858a7f8f8ad9/Jenkinsfile")
-        );
+
+        return progressService.getCodelabSolutions(codelabId);
     }
 
 }
