@@ -3,6 +3,7 @@ package com.switchfully.evolveandgo.lmsbackend.register;
 import com.switchfully.evolveandgo.lmsbackend.register.dto.RegisterStudentDto;
 import com.switchfully.evolveandgo.lmsbackend.register.exception.UserAlreadyExistsException;
 import com.switchfully.evolveandgo.lmsbackend.user.student.service.StudentService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@CrossOrigin
+@CrossOrigin (origins = {"https://evolveandgo.netlify.app", "http://localhost:4200"} )
 public class RegisterController {
 
     private final StudentService studentService;

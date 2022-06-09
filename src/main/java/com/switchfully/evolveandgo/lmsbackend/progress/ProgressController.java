@@ -7,9 +7,12 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+
+import java.io.IOException;
 import java.util.List;
 
-@CrossOrigin //("http://localhost:4200")
+
+@CrossOrigin (origins = {"https://evolveandgo.netlify.app", "http://localhost:4200"} )
 @RestController
 public class ProgressController {
 
@@ -21,8 +24,9 @@ public class ProgressController {
 
     @PreAuthorize("hasAuthority('VIEW_CODELAB_PROGRESS')")
     @GetMapping(path = "/students/{id}/codelabs", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<StudentCodelabProgressDto> getCodelabsForStudent(@PathVariable Long id) {
+    public List<StudentCodelabProgressDto> getCodelabsForStudent(@PathVariable Long id) throws IOException {
         System.out.println(progressService.getCodelabsForStudent(id));
+
         return progressService.getCodelabsForStudent(id);
     }
 
