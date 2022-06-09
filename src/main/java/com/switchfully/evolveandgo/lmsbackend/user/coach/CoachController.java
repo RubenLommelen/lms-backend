@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("coachs")
-@CrossOrigin
+@CrossOrigin (origins = {"https://evolveandgo.netlify.app", "http://localhost:4200"} )
 public class CoachController {
     private final CoachService coachService;
 

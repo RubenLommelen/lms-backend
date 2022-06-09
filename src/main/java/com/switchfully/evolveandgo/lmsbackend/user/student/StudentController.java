@@ -1,17 +1,13 @@
 package com.switchfully.evolveandgo.lmsbackend.user.student;
 
-import com.switchfully.evolveandgo.lmsbackend.user.student.dto.CreateUserDTO;
 import com.switchfully.evolveandgo.lmsbackend.user.student.dto.StudentDto;
 import com.switchfully.evolveandgo.lmsbackend.user.student.service.StudentService;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/students")
-@CrossOrigin()
+@CrossOrigin (origins = {"https://evolveandgo.netlify.app", "http://localhost:4200"} )
 public class StudentController {
     private final StudentService studentService;
 
