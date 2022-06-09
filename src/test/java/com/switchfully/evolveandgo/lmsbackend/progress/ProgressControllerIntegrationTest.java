@@ -278,30 +278,31 @@ class ProgressControllerIntegrationTest {
 
         }
 
-        @Test
-        void givenNotCompletedCodelab_WhenSaveSolution_ThenErrorIsThrown() {
-            Long studentId = 1L;
-            Long codelabId = 99999999L;
-            CodelabCommentDto codelabCommentDto = new CodelabCommentDto("Codelab 1 is hard", "https://www.donuts.com/delicious");
-
-            RestAssured.given()
-                    .port(port)
-                    .body(codelabCommentDto)
-                    .contentType(ContentType.JSON)
-                    .when()
-                    .accept(ContentType.JSON)
-                    .post("/students/"+studentId+"/codelabs/"+codelabId+"/comments")
-                    .then()
-                    .assertThat()
-                    .statusCode(HttpStatus.BAD_REQUEST.value());
-
-            Throwable thrown = Assertions.catchThrowable(() -> progressService.saveCodelabComment(codelabCommentDto,studentId,codelabId));
-
-            //THEN
-            Assertions.assertThat(thrown)
-                    .isInstanceOf(InvalidProgressException.class)
-                    .hasMessage("You can only add a solution when codelab is completed");
-        }
+//        removed due to a bug not allowing a codelab that went from done to incomplete status to save a comment
+//        @Test
+//        void givenNotCompletedCodelab_WhenSaveSolution_ThenErrorIsThrown() {
+//            Long studentId = 1L;
+//            Long codelabId = 99999999L;
+//            CodelabCommentDto codelabCommentDto = new CodelabCommentDto("Codelab 1 is hard", "https://www.donuts.com/delicious");
+//
+//            RestAssured.given()
+//                    .port(port)
+//                    .body(codelabCommentDto)
+//                    .contentType(ContentType.JSON)
+//                    .when()
+//                    .accept(ContentType.JSON)
+//                    .post("/students/"+studentId+"/codelabs/"+codelabId+"/comments")
+//                    .then()
+//                    .assertThat()
+//                    .statusCode(HttpStatus.BAD_REQUEST.value());
+//
+//            Throwable thrown = Assertions.catchThrowable(() -> progressService.saveCodelabComment(codelabCommentDto,studentId,codelabId));
+//
+//            //THEN
+//            Assertions.assertThat(thrown)
+//                    .isInstanceOf(InvalidProgressException.class)
+//                    .hasMessage("You can only add a solution when codelab is completed");
+//        }
 
         @Test
         void givenNoCodelabProgress_WhenSaveSolution_ThenSolutionIsNotSaved() {
@@ -328,7 +329,7 @@ class ProgressControllerIntegrationTest {
         @Test
         void givenCodelabId_whenGetSolutions_thenSolutionUrlAndAuthorReturned() {
             //GIVEN
-            int codelabId = 1;
+            int codelabId = 99999997;
             Student student = studentJpaRepository.findById(1L).get();
             CodelabSolutionDto expected = new CodelabSolutionDto(student.getDisplayName(), "https://github.com/BakouBakou/java-feb-2022/blob/08d9080acb8ad758a3ee1d473895858a7f8f8ad9/Jenkinsfile");
 

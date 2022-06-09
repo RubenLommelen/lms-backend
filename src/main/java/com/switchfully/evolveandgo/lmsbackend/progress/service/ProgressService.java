@@ -124,10 +124,12 @@ public class ProgressService {
         }
         StudentCodelabProgress studentCodelabProgress = studentCodelabProgressJpaRepository.findByCodelabIdAndStudentId(codelabId, studentId);
         studentCodelabProgress.setComment(codelabCommentDto.getCodelabComment());
-        if (isSolutionForIncompleteCodelab(codelabCommentDto, studentCodelabProgress)) {
-            logger.error(new InvalidProgressException().getMessage());
-            throw new InvalidProgressException();
-        }
+//        removed constraint due to a bug not allowing a codelab that went from done to incomplete status to save a comment
+//        when solved, uncomment the test again
+//        if (isSolutionForIncompleteCodelab(codelabCommentDto, studentCodelabProgress)) {
+//            logger.error(new InvalidProgressException().getMessage());
+//            throw new InvalidProgressException();
+//        }
         studentCodelabProgress.setSolutionUrl(codelabCommentDto.getCodelabSolutionUrl());
         studentCodelabProgressJpaRepository.save(studentCodelabProgress);
         logger.info("Comment and/or solution url saved to progress with student ID " + studentId + " and codelab ID " + codelabId + ".");
@@ -136,7 +138,7 @@ public class ProgressService {
     }
 
     private boolean isSolutionForIncompleteCodelab(CodelabCommentDto codelabCommentDto, StudentCodelabProgress studentCodelabProgress) {
-        return !studentCodelabProgress.getProgress().codelabCompleted() && !(codelabCommentDto.getCodelabSolutionUrl() == null) ;
+        return !studentCodelabProgress.getProgress().codelabCompleted() && !(codelabCommentDto.getCodelabSolutionUrl() == null);
     }
 
     public List<CodelabSolutionDto> getCodelabSolutions(Long codelabId) {
@@ -144,9 +146,7 @@ public class ProgressService {
                 .filter(progress -> isNotNullEmptyBlank(progress))
                 .toList();
 
-        List<CodelabSolutionDto> codelabSolutionDtos = studentCodelabProgressMapper.toSolutionDtoList(codelabsWithSolutions);
-        System.out.println(codelabSolutionDtos);
-        return codelabSolutionDtos;
+        return studentCodelabProgressMapper.toSolutionDtoList(codelabsWithSolutions);
     }
 
     private boolean isNotNullEmptyBlank(StudentCodelabProgress progress) {
