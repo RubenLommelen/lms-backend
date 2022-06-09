@@ -1,6 +1,7 @@
 package com.switchfully.evolveandgo.lmsbackend.register;
 
 import com.switchfully.evolveandgo.lmsbackend.register.dto.RegisterStudentDto;
+import com.switchfully.evolveandgo.lmsbackend.register.dto.RegisterValidDto;
 import com.switchfully.evolveandgo.lmsbackend.register.exception.UserAlreadyExistsException;
 import com.switchfully.evolveandgo.lmsbackend.user.student.service.StudentService;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,8 +25,8 @@ public class RegisterController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "register", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void registerStudent(@Valid @RequestBody RegisterStudentDto registerStudentDto) {
-        studentService.registerStudent(registerStudentDto);
+    public RegisterValidDto registerStudent(@Valid @RequestBody RegisterStudentDto registerStudentDto) {
+        return studentService.registerStudent(registerStudentDto);
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)

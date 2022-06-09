@@ -1,6 +1,7 @@
 package com.switchfully.evolveandgo.lmsbackend.register;
 
 import com.switchfully.evolveandgo.lmsbackend.register.dto.RegisterStudentDto;
+import com.switchfully.evolveandgo.lmsbackend.register.dto.RegisterValidDto;
 import com.switchfully.evolveandgo.lmsbackend.register.exception.PasswordsDoNotMatchException;
 import com.switchfully.evolveandgo.lmsbackend.user.exception.StudentEmailAlreadyExistsException;
 import com.switchfully.evolveandgo.lmsbackend.user.student.domain.Student;
@@ -151,7 +152,7 @@ class RegisterControllerTest {
     void givenRegisterStudentDto_whenEmailAlreadyExists_ThenThrowException(){
         RegisterStudentDto expected = new RegisterStudentDto("Spaghetti", "rinaldo@spaghetto.be","Ruben123!", "Ruben123!");
 
-        RestAssured
+        RegisterValidDto registerValidDto = RestAssured
                 .given()
                 .contentType(JSON)
                 .body(expected)
@@ -160,13 +161,10 @@ class RegisterControllerTest {
                 .post("/register")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.BAD_REQUEST.value());
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .as(RegisterValidDto.class);
 
-        Throwable thrown = Assertions.catchThrowable(() -> studentService.registerStudent(expected));
-
-        //THEN
-        Assertions.assertThat(thrown)
-                .isInstanceOf(StudentEmailAlreadyExistsException.class)
-                .hasMessage("Email already exists, for email : " + "rinaldo@spaghetto.be");
+        Assertions.assertThat(registerValidDto.isEmailUnique()).isFalse();
     }
 }

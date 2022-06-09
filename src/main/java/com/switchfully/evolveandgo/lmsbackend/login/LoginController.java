@@ -22,13 +22,11 @@ public class LoginController {
 
 
     private final LoginService loginService;
-    private final StudentService studentService;
     private final CoachService coachService;
     private final StudentJpaRepository studentJpaRepository;
 
-    public LoginController(LoginService loginService, StudentService studentService, CoachService coachService, StudentJpaRepository studentJpaRepository) {
+    public LoginController(LoginService loginService, CoachService coachService, StudentJpaRepository studentJpaRepository) {
         this.loginService = loginService;
-        this.studentService = studentService;
         this.coachService = coachService;
         this.studentJpaRepository = studentJpaRepository;
     }
@@ -37,11 +35,10 @@ public class LoginController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public TokenDto login(@RequestBody @Valid LoginDto loginDto) {
-//        User user = studentService.findByEmail(loginDto.getEmail());
         User user = studentJpaRepository.findByEmail(loginDto.getEmail()).orElse(null);
         UserType userType = UserType.STUDENT;
 
-        if(user == null){
+        if (user == null) {
             user = coachService.findByEmail(loginDto.getEmail()).orElse(null);
         }
 
@@ -49,11 +46,11 @@ public class LoginController {
             throw new UserNotFoundException(loginDto.getEmail());
         }
 
-        if(user instanceof Coach){
+        if (user instanceof Coach) {
             userType = UserType.COACH;
         }
 
-        return new TokenDto(loginService.getToken(user.getDisplayName(), loginDto.getPassword()), user.getDisplayName(), user.getId(), userType);
+        return new TokenDto(loginService.getToken(user.getEmail(), loginDto.getPassword()), user.getDisplayName(), user.getId(), userType);
     }
 
 }

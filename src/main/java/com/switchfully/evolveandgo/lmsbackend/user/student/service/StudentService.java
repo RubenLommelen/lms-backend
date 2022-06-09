@@ -1,6 +1,7 @@
 package com.switchfully.evolveandgo.lmsbackend.user.student.service;
 
 import com.switchfully.evolveandgo.lmsbackend.register.dto.RegisterStudentDto;
+import com.switchfully.evolveandgo.lmsbackend.register.dto.RegisterValidDto;
 import com.switchfully.evolveandgo.lmsbackend.register.exception.PasswordsDoNotMatchException;
 import com.switchfully.evolveandgo.lmsbackend.security.KeycloakService;
 import com.switchfully.evolveandgo.lmsbackend.security.KeycloakUserDto;
@@ -44,18 +45,27 @@ public class StudentService {
         return studentMapper.toDto(findById(id));
     }
 
-    public void registerStudent(RegisterStudentDto registerStudentDto) {
+    public RegisterValidDto registerStudent(RegisterStudentDto registerStudentDto) {
         logger.info("Started registering: " + registerStudentDto.getEmail());
+
+        RegisterValidDto registerValidDto = new RegisterValidDto(true);
+
         if (!registerStudentDto.getPassword().equals(registerStudentDto.getRepeatPassword())) {
             logger.error("Passwords do not match for: " + registerStudentDto.getEmail());
             throw new PasswordsDoNotMatchException();
         }
         if (studentJpaRepository.existsByEmail(registerStudentDto.getEmail())) {
-            logger.error("Studetn with email: " + registerStudentDto.getEmail() + " already exists");
-            throw new StudentEmailAlreadyExistsException(registerStudentDto.getEmail());
+            logger.error("Student with email: " + registerStudentDto.getEmail() + " already exists");
+            registerValidDto.setEmailUnique(false);
+//            throw new StudentEmailAlreadyExistsException(registerStudentDto.getEmail());
         }
-        studentJpaRepository.save(studentMapper.toStudent(registerStudentDto));
-        keycloakService.addUser(new KeycloakUserDto(registerStudentDto.getEmail(), registerStudentDto.getPassword(), Role.STUDENT));
-        logger.info("Finished registering: " + registerStudentDto.getEmail());
+
+        if (registerValidDto.isEmailUnique()) {
+            studentJpaRepository.save(studentMapper.toStudent(registerStudentDto));
+            keycloakService.addUser(new KeycloakUserDto(registerStudentDto.getEmail(), registerStudentDto.getPassword(), Role.STUDENT));
+            logger.info("Finished registering: " + registerStudentDto.getEmail());
+        }
+
+        return registerValidDto;
     }
 }
